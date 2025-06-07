@@ -46,3 +46,9 @@
     background-color: #E2E2E2;
     border: none;
 }
+@media (max-width:1050px) {
+    .explore-menu-text{
+        max-width: 100%;
+        font-size: 14px;
+    }
+}
