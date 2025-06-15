@@ -16,3 +16,8 @@ a{
   text-decoration: none;
   color: inherit;
 }
+hr{
+  border: none;
+  height: 1px;
+  background-color: #A9A9A9;
+}
