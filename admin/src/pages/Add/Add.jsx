@@ -1,48 +1,102 @@
-import React from 'react'
-import './Add.css'
-import { assets } from '../../assets/assets'
-const Add = () => {
-  return (
-        <div className='add'>
-            <form className='flex-col'  >
-                <div className='add-img-upload flex-col'>
-                    <p>Upload image</p>
-                    <input  type="file" accept="image/*" id="image" hidden />
-                    <label htmlFor="image">
-                        <img src={ assets.upload_area } alt="" />
-                    </label>
-                </div>
-                <div className='add-product-name flex-col'>
-                    <p>Product name</p>
-                    <input name='name'   type="text" placeholder='Type here' required />
-                </div>
-                <div className='add-product-description flex-col'>
-                    <p>Product description</p>
-                    <textarea name='description'   type="text" rows={6} placeholder='Write content here' required />
-                </div>
-                <div className='add-category-price'>
-                    <div className='add-category flex-col'>
-                        <p>Product category</p>
-                        <select name='category'   >
-                            <option value="Salad">Salad</option>
-                            <option value="Rolls">Rolls</option>
-                            <option value="Deserts">Deserts</option>
-                            <option value="Sandwich">Sandwich</option>
-                            <option value="Cake">Cake</option>
-                            <option value="Pure Veg">Pure Veg</option>
-                            <option value="Pasta">Pasta</option>
-                            <option value="Noodles">Noodles</option>
-                        </select>
-                    </div>
-                    <div className='add-price flex-col'>
-                        <p>Product Price</p>
-                        <input type="Number" name='price'    placeholder='25' />
-                    </div>
-                </div>
-                <button type='submit' className='add-btn' >ADD</button>
-            </form>
-        </div>
-    )
-}
+import React, { useEffect, useState } from "react";
+import "./Add.css";
+import { assets } from "../../assets/assets";
 
-export default Add
+
+const Add = () => {
+  const [image, setImage] = useState(false);
+  const [data, setData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    category: "Salad",
+  });
+
+  const onChangeHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setData((data) => ({ ...data, [name]: value }));
+  };
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  return (
+    <div className="add">
+      <form className="flex-col">
+        <div className="add-img-upload flex-col">
+          <p>Upload image</p>
+          <input
+            onChange={(e) => {
+              setImage(e.target.files[0]);
+              e.target.value = "";
+            }}
+            type="file"
+            accept="image/*"
+            id="image"
+            hidden
+          />
+          <label htmlFor="image">
+            <img
+              src={!image ? assets.upload_area : URL.createObjectURL(image)}
+              alt=""
+            />
+          </label>
+        </div>
+        <div className="add-product-name flex-col">
+          <p>Product name</p>
+          <input
+            name="name"
+            onChange={onChangeHandler}
+            value={data.name}
+            type="text"
+            placeholder="Type here"
+            required
+          />
+        </div>
+        <div className="add-product-description flex-col">
+          <p>Product description</p>
+          <textarea
+            name="description"
+            onChange={onChangeHandler}
+            value={data.description}
+            type="text"
+            rows={6}
+            placeholder="Write content here"
+            required
+          />
+        </div>
+        <div className="add-category-price">
+          <div className="add-category flex-col">
+            <p>Product category</p>
+            <select name="category" onChange={onChangeHandler}>
+              <option value="Salad">Salad</option>
+              <option value="Rolls">Rolls</option>
+              <option value="Deserts">Deserts</option>
+              <option value="Sandwich">Sandwich</option>
+              <option value="Cake">Cake</option>
+              <option value="Pure Veg">Pure Veg</option>
+              <option value="Pasta">Pasta</option>
+              <option value="Noodles">Noodles</option>
+            </select>
+          </div>
+          <div className="add-price flex-col">
+            <p>Product Price</p>
+            <input
+              type="Number"
+              name="price"
+              onChange={onChangeHandler}
+              value={data.price}
+              placeholder="25"
+            />
+          </div>
+        </div>
+        <button type="submit" className="add-btn">
+          ADD
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default Add;
