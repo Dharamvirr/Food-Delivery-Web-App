@@ -11,7 +11,7 @@
     flex-direction: column;
     gap: 20px;
 }
-.sidebar-option{
+.sidebar-option{ 
     display: flex;
     align-items: center;
     gap: 12px;
