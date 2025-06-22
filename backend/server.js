@@ -3,8 +3,11 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 // index.js or server.js
 import dotenv from 'dotenv';
+import 'dotenv/config'
 import foodRouter from "./routes/foodRoute.js";
 dotenv.config();
+
+import userRouter from "./routes/userRoute.js";
 
 
 // app config
@@ -14,6 +17,7 @@ const port = process.env.PORT ;
 
 
 // middlewares
+
 app.use(express.json())
 app.use(cors()) // using this we can access any frontend from backend
 
@@ -22,6 +26,7 @@ app.use(cors()) // using this we can access any frontend from backend
 connectDB();
 
 // api endpoints 
+app.use("/api/user", userRouter)
 app.use("/api/food", foodRouter)
 app.use("/images",express.static('uploads'))
 
