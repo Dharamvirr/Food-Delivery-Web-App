@@ -3,7 +3,7 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 // index.js or server.js
 import dotenv from 'dotenv';
-import 'dotenv/config'
+
 import foodRouter from "./routes/foodRoute.js";
 dotenv.config();
 
