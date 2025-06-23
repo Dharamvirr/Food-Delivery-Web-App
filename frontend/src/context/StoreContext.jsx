@@ -1,10 +1,13 @@
 import { createContext, useState } from "react";
-import { food_list, menu_list } from "../assets/assets";
+import { food_list} from "../assets/assets";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
+       const url = "http://localhost:4000"
+
+       const [token,setToken]=useState("");
 
     const addToCart = async (itemId) => {
         if (!cartItems[itemId]) {
@@ -38,6 +41,9 @@ const StoreContextProvider = (props) => {
         addToCart,
         removeFromCart,
         getTotalCartAmount,
+        url,
+        token,
+        setToken,
     };
 
     return (
