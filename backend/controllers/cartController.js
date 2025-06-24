@@ -4,7 +4,7 @@ import userModel from "../models/userModel.js"
 const addToCart = async (req, res) => {
    try {
       let userData = await userModel.findOne({_id:req.body.userId});
-      // or we can use findById(req.body.userId)
+      // or we can use findById(req.body)
       let cartData = await userData.cartData;
       if (!cartData[req.body.itemId]) {
          cartData[req.body.itemId] = 1;
@@ -39,7 +39,14 @@ const removeFromCart = async (req, res) => {
 
 // get user cart
 const getCart = async (req, res) => {
-    
+   try {
+      let userData = await userModel.findById(req.body.userId);
+      let cartData = await userData.cartData;
+      res.json({ success: true,cartData });
+   } catch (error) {
+      console.log(error);
+      res.json({ success: false, message: "Error" })
+   }
 }
 
 
