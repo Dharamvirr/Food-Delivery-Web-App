@@ -31,9 +31,9 @@ const PlaceOrder = () => {
     setData(data => ({ ...data, [name]: value }))
   }
 const navigate = useNavigate();
-  useEffect(() => {
-    console.log(data);
-  }, [data])
+  // useEffect(() => {
+  //   console.log(data);
+  // }, [data])
 
 
   const placeOrder = async (e) => {
@@ -47,33 +47,36 @@ const navigate = useNavigate();
       }
     }))
 
-    // console.log(orderItems);
+    console.log(orderItems);
     let orderData = {
       address: data,
       items: orderItems,
-      amount: getTotalCartAmount() + deliveryCharge,
+      amount: getTotalCartAmount() + 2,
     }
-    if (payment === "stripe") {
+    console.log("Order Data:", orderData);
+
+    // if (payment === "stripe") {
       let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
       if (response.data.success) {
         const { session_url } = response.data;
         window.location.replace(session_url);
       }
       else {
+        console.log(response.data);        
         toast.error("Something Went Wrong")
       }
-    }
-    else {
-      let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
-      if (response.data.success) {
-        navigate("/myorders")
-        toast.success(response.data.message)
-        setCartItems({});
-      }
-      else {
-        toast.error("Something Went Wrong")
-      }
-    }
+    // }
+    // else {
+    //   let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
+    //   if (response.data.success) {
+    //     navigate("/myorders")
+    //     toast.success(response.data.message)
+    //     setCartItems({});
+    //   }
+    //   else {
+    //     toast.error("Something Went Wrong")
+    //   }
+    // }
 
   }
 
@@ -88,7 +91,7 @@ const navigate = useNavigate();
     // }, [token])
 
   return (
-    <form action="" className="place-order">
+    <form onSubmit={placeOrder} className="place-order">
       <div className="place-order-left">
         <p className="title">Delivery information</p>
         <div className="multi-fields">
@@ -128,7 +131,7 @@ const navigate = useNavigate();
               <b>₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}</b>
             </div>
           </div>
-          <button>PROCEED TO Payment</button>
+          <button type='submit'>PROCEED TO Payment</button>
         </div>
       </div>
     </form>
