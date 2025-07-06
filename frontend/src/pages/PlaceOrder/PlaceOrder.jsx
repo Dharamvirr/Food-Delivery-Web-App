@@ -30,65 +30,64 @@ const PlaceOrder = () => {
     const value = event.target.value
     setData(data => ({ ...data, [name]: value }))
   }
-const navigate = useNavigate();
   // useEffect(() => {
-  //   console.log(data);
-  // }, [data])
-
-
-  const placeOrder = async (e) => {
-    e.preventDefault()
-    let orderItems = [];
-    food_list.map(((item) => {
-      if (cartItems[item._id] > 0) {
-        let itemInfo = item;
-        itemInfo["quantity"] = cartItems[item._id];
-        orderItems.push(itemInfo)
+    //   console.log(data);
+    // }, [data])
+    
+    
+    const placeOrder = async (e) => {
+      e.preventDefault()
+      let orderItems = [];
+      food_list.map(((item) => {
+        if (cartItems[item._id] > 0) {
+          let itemInfo = item;
+          itemInfo["quantity"] = cartItems[item._id];
+          orderItems.push(itemInfo)
+        }
+      }))
+      
+      console.log(orderItems);
+      let orderData = {
+        address: data,
+        items: orderItems,
+        amount: getTotalCartAmount() + 2,
       }
-    }))
-
-    console.log(orderItems);
-    let orderData = {
-      address: data,
-      items: orderItems,
-      amount: getTotalCartAmount() + 2,
-    }
-    console.log("Order Data:", orderData);
-
-    // if (payment === "stripe") {
-      let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
-      if (response.data.success) {
-        const { session_url } = response.data;
-        window.location.replace(session_url);
+      console.log("Order Data:", orderData);
+      
+      // if (payment === "stripe") {
+        let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
+        if (response.data.success) {
+          const { session_url } = response.data;
+          window.location.replace(session_url);
+        }
+        else {
+          // console.log(response.data);        
+          toast.error("Something Went Wrong")
+        }
+        // }
+        // else {
+          //   let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
+          //   if (response.data.success) {
+            //     navigate("/myorders")
+            //     toast.success(response.data.message)
+            //     setCartItems({});
+            //   }
+            //   else {
+              //     toast.error("Something Went Wrong")
+              //   }
+              // }
+              
+            }
+            
+  const navigate = useNavigate();
+    useEffect(() => {
+      if (!token) {
+        toast.error("to place an order sign in first");
+        navigate("/cart");
+      } else if (getTotalCartAmount() === 0) {
+        navigate("/cart");
       }
-      else {
-        console.log(response.data);        
-        toast.error("Something Went Wrong")
-      }
-    // }
-    // else {
-    //   let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
-    //   if (response.data.success) {
-    //     navigate("/myorders")
-    //     toast.success(response.data.message)
-    //     setCartItems({});
-    //   }
-    //   else {
-    //     toast.error("Something Went Wrong")
-    //   }
-    // }
-
-  }
-
-    //   useEffect(() => {
-    //     if (!token) {
-    //         toast.error("to place an order sign in first")
-    //         navigate('/cart')
-    //     }
-    //     else if (getTotalCartAmount() === 0) {
-    //         navigate('/cart')
-    //     }
-    // }, [token])
+    }, [token]);
 
   return (
     <form onSubmit={placeOrder} className="place-order">
