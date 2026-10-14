@@ -1,0 +1,559 @@
+.food-detail-page {
+  padding: 30px 0 80px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.food-detail-not-found {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.food-detail-not-found h2 {
+  font-size: 26px;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.food-detail-not-found p {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.food-detail-not-found button {
+  padding: 12px 28px;
+  background: #e11d62;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Breadcrumb */
+.detail-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.detail-breadcrumb a {
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.detail-breadcrumb a:hover {
+  color: #e11d62;
+}
+
+.detail-breadcrumb .current-page {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Hero Showcase Card */
+.detail-hero-card {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 48px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: 0 15px 40px rgba(225, 29, 98, 0.08), 0 0 20px rgba(245, 158, 11, 0.08);
+  border: 1.5px solid rgba(225, 29, 98, 0.15);
+  margin-bottom: 50px;
+}
+
+/* Left Image Section */
+.detail-image-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-img-container {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff8f9;
+  box-shadow: 0 8px 24px rgba(225, 29, 98, 0.08);
+  border: 1px solid rgba(225, 29, 98, 0.12);
+}
+
+.detail-main-img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.detail-main-img:hover {
+  transform: scale(1.04);
+}
+
+.detail-diet-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.detail-diet-badge.veg {
+  color: #16a34a;
+  border: 1.5px solid #16a34a;
+}
+
+.detail-diet-badge.veg .diet-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16a34a;
+}
+
+.detail-diet-badge.non-veg {
+  color: #e11d62;
+  border: 1.5px solid #e11d62;
+}
+
+.detail-diet-badge.non-veg .diet-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e11d62;
+}
+
+.detail-discount-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: linear-gradient(135deg, #e11d62 0%, #f43f5e 100%);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(225, 29, 98, 0.4);
+}
+
+/* Right Info Section */
+.detail-info-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-category-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.detail-category-pill {
+  background: #fff0f3;
+  color: #e11d62;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(225, 29, 98, 0.2);
+}
+
+.detail-rating-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f59e0b;
+}
+
+.review-count {
+  color: #64748b;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.detail-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 12px;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+
+.detail-description {
+  font-size: 15px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.detail-price-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.detail-current-price {
+  font-size: 32px;
+  font-weight: 800;
+  color: #e11d62;
+}
+
+.detail-original-price {
+  font-size: 20px;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.detail-savings-badge {
+  background: #f0fdf4;
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+/* Highlights Grid */
+.detail-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  background: #fff8f9;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(225, 29, 98, 0.12);
+}
+
+.highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hl-icon {
+  font-size: 22px;
+}
+
+.hl-label {
+  font-size: 11.5px;
+  color: #64748b;
+  margin: 0;
+}
+
+.hl-value {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* Ingredients */
+.detail-ingredients-box {
+  margin-bottom: 28px;
+}
+
+.detail-ingredients-box h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 10px;
+}
+
+.ingredients-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ing-tag {
+  background: #ffffff;
+  border: 1px solid rgba(225, 29, 98, 0.2);
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* Action Bar */
+.detail-action-bar {
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.add-cart-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.detail-qty-stepper {
+  display: flex;
+  align-items: center;
+  background: #fff0f3;
+  border-radius: 12px;
+  padding: 6px 12px;
+  gap: 14px;
+  border: 1.5px solid rgba(225, 29, 98, 0.25);
+}
+
+.detail-qty-stepper button {
+  background: #ffffff;
+  border: 1px solid rgba(225, 29, 98, 0.25);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e11d62;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.detail-qty-stepper button:hover {
+  background: #e11d62;
+  color: white;
+  border-color: #e11d62;
+}
+
+.detail-qty-stepper span {
+  font-size: 16px;
+  font-weight: 800;
+  min-width: 20px;
+  text-align: center;
+  color: #e11d62;
+}
+
+.detail-add-btn {
+  flex: 1;
+  padding: 16px 28px;
+  background: linear-gradient(135deg, #e11d62 0%, #f43f5e 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(225, 29, 98, 0.35), 0 0 15px rgba(245, 158, 11, 0.2);
+  transition: all 0.2s;
+}
+
+.detail-add-btn:hover {
+  background: #e11d62;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(225, 29, 98, 0.45);
+}
+
+.incart-active-box {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #fff0f3;
+  border: 1.5px solid #e11d62;
+  border-radius: 14px;
+  padding: 14px 20px;
+}
+
+.incart-label {
+  font-weight: 700;
+  color: #e11d62;
+  font-size: 14px;
+}
+
+.detail-counter-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(225, 29, 98, 0.3);
+}
+
+.detail-counter-pill button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: #e11d62;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.detail-counter-pill span {
+  font-weight: 800;
+  font-size: 15px;
+  color: #e11d62;
+}
+
+.view-cart-btn {
+  margin-left: auto;
+  padding: 10px 22px;
+  background: #e11d62;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(225, 29, 98, 0.3);
+}
+
+/* Reviews Section */
+.detail-reviews-section {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: 0 15px 40px rgba(225, 29, 98, 0.08), 0 0 20px rgba(245, 158, 11, 0.08);
+  border: 1.5px solid rgba(225, 29, 98, 0.15);
+  margin-bottom: 50px;
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.section-header-row h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.verified-badge {
+  font-size: 13px;
+  color: #16a34a;
+  font-weight: 700;
+  background: #f0fdf4;
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  padding: 5px 14px;
+  border-radius: 20px;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.review-card {
+  background: #fff8f9;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(225, 29, 98, 0.12);
+}
+
+.review-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.rev-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rev-avatar {
+  font-size: 28px;
+}
+
+.rev-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rev-date {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+}
+
+.rev-stars {
+  font-size: 12px;
+}
+
+.rev-comment {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Related Dishes */
+.detail-related-section {
+  margin-top: 40px;
+}
+
+.detail-related-section h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 24px;
+}
+
+.related-dishes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px;
+  row-gap: 36px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .detail-hero-card {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 24px;
+  }
+  .detail-main-img {
+    height: 320px;
+  }
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-price-row {
+    flex-wrap: wrap;
+  }
+  .detail-highlights-grid {
+    grid-template-columns: 1fr;
+  }
+  .add-cart-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

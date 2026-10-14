@@ -1,0 +1,11 @@
+# Root .gitignore
+node_modules
+.env
+.env.*
+!.env.example
+*.log
+dist
+dist-ssr
+.DS_Store
+.vscode
+.idea

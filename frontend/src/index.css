@@ -1,15 +1,50 @@
- @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Luscious Gamesberry Cherry Palette */
+  --brand-berry: #e11d62;
+  --brand-berry-dark: #be1254;
+  --brand-berry-light: #f43f5e;
+  --brand-berry-soft: #fff1f4;
+  --brand-berry-gradient: linear-gradient(135deg, #e11d62 0%, #f43f5e 50%, #fb7185 100%);
+  
+  /* Diwali Golden Diya & Fairy Light Glows */
+  --brand-gold: #f59e0b;
+  --brand-gold-light: #fbbf24;
+  --brand-gold-glow: rgba(245, 158, 11, 0.35);
+  --brand-berry-glow: rgba(225, 29, 98, 0.3);
+  
+  /* Leaf Green Freshness */
+  --brand-leaf: #16a34a;
+  
+  /* Festive Warm Pearl / Champagne Canvas (Clean & Bright, NOT black!) */
+  --bg-main: #fefbf8;
+  --bg-card: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-light: rgba(225, 29, 98, 0.12);
+  --border-gold: rgba(245, 158, 11, 0.3);
+}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
+  background-color: var(--bg-main);
+  background-image: 
+    radial-gradient(circle at 10% 8%, rgba(245, 158, 11, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 90% 20%, rgba(225, 29, 98, 0.08) 0%, transparent 48%),
+    radial-gradient(circle at 50% 85%, rgba(251, 191, 36, 0.09) 0%, transparent 55%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -17,16 +52,71 @@ a {
   color: inherit;
 }
 
-.app{
-  width:80%;
-  margin:auto;
+/* Diwali Top Fairy Light Streamer */
+.diwali-fairy-lights-streamer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+  z-index: 99999;
+  background: linear-gradient(
+    90deg,
+    #e11d62 0%,
+    #f59e0b 20%,
+    #ec4899 40%,
+    #10b981 60%,
+    #f59e0b 80%,
+    #e11d62 100%
+  );
+  background-size: 200% 100%;
+  animation: fairyLightSlide 3.5s linear infinite;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.7), 0 0 24px rgba(225, 29, 98, 0.5);
+}
+
+@keyframes fairyLightSlide {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+.app {
+  width: 90%;
+  max-width: 1280px;
+  margin: auto;
+  min-height: 85vh;
+}
+
+/* Custom Festive Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fdf6f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #e11d62 0%, #f59e0b 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e11d62;
 }
 
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }    
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    width: 94%;
+  }
 }

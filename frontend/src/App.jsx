@@ -8,15 +8,21 @@ import Footer from "./components/Footer/Footer.jsx";
 import LoginPopup from "./components/LoginPopup/LoginPopup.jsx";
 import Verify from "./pages/Verify/Verify.jsx";
 import MyOrders from "./pages/MyOrders/MyOrders.jsx";
-
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import FoodDetail from "./pages/FoodDetail/FoodDetail.jsx";
+import FloatingCart from "./components/FloatingCart/FloatingCart.jsx";
+import AIChatBot from "./components/AIChatBot/AIChatBot.jsx";
+import PageLoader from "./components/PageLoader/PageLoader.jsx";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
-      
+      <div className="diwali-fairy-lights-streamer" />
+      <PageLoader />
+      <ToastContainer />
       {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : <></>}
 
       <div className="app">
@@ -27,8 +33,11 @@ const App = () => {
           <Route path="/order" element={<PlaceOrder />} />
           <Route path="/verify" element={<Verify></Verify>} />
           <Route path="/myorders" element={<MyOrders/>} />
+          <Route path="/food/:id" element={<FoodDetail />} />
         </Routes>
       </div>
+      <FloatingCart />
+      <AIChatBot />
       <Footer />
     </>
   );

@@ -1,65 +1,232 @@
-.header{
-    height: 34vw;
-    margin: 30px auto;
-    background: url('/header_img.png') no-repeat;
-    background-size:contain;
-    position: relative;
-}
-.header-contents{
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 1.5vw;
-    max-width: 50%;
-    bottom: 10%;
-    left: 6vw;
-    animation: fadeIn 3s;
-}
-.header-contents h2{
-    font-weight:500;
-    color: white;
-    font-size: max(4.5vw,22px);
-}
-.header-contents p{
-    color: white;
-    font-size: 1vw;
-}
-.header-contents button{
-    border: none;
-    color: #747474;
-    font-weight: 500;
-    padding: 1vw 2.3vw;
-    background: white;
-    font-size: max(1vw,13px);
-    border-radius: 50px;
-}
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }    
+.header {
+  height: 38vw;
+  min-height: 400px;
+  max-height: 540px;
+  margin: 25px auto;
+  background: url('/header_img.png') no-repeat center center;
+  background-size: cover;
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 45px rgba(225, 29, 98, 0.08), 0 0 25px rgba(245, 158, 11, 0.12);
+  border: 1.5px solid rgba(245, 158, 11, 0.25);
 }
 
-/* 
-@media (max-width:1050px) {
-    .header{
-        height: 38vw;
-    }
-    .header-contents{
-        max-width: 45%;
-    }
+/* Subtle warm sunbeam overlay */
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.08) 45%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
 }
-@media(max-width:750px){
-    .header-contents{
-        max-width: 55%;
-    }
-    .header-contents p{
-       display: none;
-    }
-    .header-contents button{
-        padding: 2vw 4vw;
-    }
-} */
+
+/* Floating Badges with Diwali Fairy Light Borders */
+.floating-badge {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(245, 158, 11, 0.45);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1), 0 0 16px rgba(245, 158, 11, 0.25);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s ease;
+}
+
+.floating-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 35px rgba(225, 29, 98, 0.2), 0 0 22px rgba(245, 158, 11, 0.4);
+  border-color: #e11d62;
+}
+
+.badge-top-right {
+  top: 14%;
+  right: 5%;
+}
+
+.badge-middle-right {
+  top: 45%;
+  right: 4%;
+}
+
+.badge-bottom-right {
+  bottom: 12%;
+  right: 10%;
+}
+
+.badge-icon {
+  font-size: 24px;
+}
+
+.badge-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.badge-sub {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+  margin: 2px 0 0;
+}
+
+/* Pulsing radar dot for express delivery */
+.pulse-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #16a34a;
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+  animation: radarPulse 1.8s infinite;
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(22, 163, 74, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+/* Hero Typography Directly on the Banner */
+.header-contents {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.3vw;
+  max-width: 48%;
+  bottom: 11%;
+  left: 5.5vw;
+  background: transparent;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.header-contents h2 {
+  font-weight: 800;
+  color: #ffffff;
+  font-size: clamp(26px, 4.2vw, 54px);
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin: 0;
+  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.35);
+}
+
+.header-contents p {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(12.5px, 1.05vw, 15px);
+  line-height: 1.6;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.header-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.header-primary-btn {
+  border: none;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 13px 30px;
+  background: linear-gradient(135deg, #e11d62 0%, #f43f5e 100%);
+  font-size: 14.5px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(225, 29, 98, 0.4), 0 0 16px rgba(245, 158, 11, 0.3);
+  transition: all 0.25s ease;
+}
+
+.header-primary-btn:hover {
+  background: #e11d62;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(225, 29, 98, 0.5), 0 0 22px rgba(245, 158, 11, 0.4);
+}
+
+.header-secondary-btn {
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 14px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.25s ease;
+}
+
+.header-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1050px) {
+  .header {
+    height: 48vw;
+    min-height: 380px;
+  }
+  .header-contents {
+    max-width: 60%;
+    bottom: 8%;
+    left: 4.5vw;
+  }
+  .floating-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 750px) {
+  .header {
+    min-height: 290px;
+    border-radius: 20px;
+  }
+  .header-contents {
+    max-width: 90%;
+    bottom: 8%;
+    left: 5%;
+    gap: 12px;
+  }
+  .header-contents p {
+    display: none;
+  }
+  .header-contents h2 {
+    font-size: 24px;
+  }
+  .header-primary-btn,
+  .header-secondary-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}

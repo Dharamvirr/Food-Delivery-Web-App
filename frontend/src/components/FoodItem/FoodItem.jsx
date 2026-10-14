@@ -1,36 +1,114 @@
-import React, { useContext} from 'react'
-import './FoodItem.css'
-import { assets } from '../../assets/assets'
+import React, { useContext, useState } from 'react';
+import './FoodItem.css';
+import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-const FoodItem = ({id,name, price,description,image}) => {
+const FoodItem = ({ id, name, price, description, image }) => {
+  const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
+  const [liked, setLiked] = useState(false);
+  const navigate = useNavigate();
 
-     
-    const {cartItems,addToCart,removeFromCart,url} = useContext(StoreContext);
+  const imageSrc =
+    typeof image === 'string' &&
+    (image.startsWith('http') || image.startsWith('/') || image.startsWith('data:'))
+      ? image
+      : `${url}/images/${image}`;
 
-    return (
-        <div className='food-item'>
-            <div className='food-item-img-container'>
-                <img className='food-item-image' src={url+"/images/"+image} alt="" />
-                 {!cartItems[id]
-                ?<img className='add' onClick={() => addToCart(id)} src={assets.add_icon_white} alt="" />
-                :<div className="food-item-counter">
-                        <img src={assets.remove_icon_red} onClick={()=>removeFromCart(id)} alt="" />
-                        <p>{cartItems[id]}</p>
-                        <img src={assets.add_icon_green} onClick={() => addToCart(id)} alt="" />
-                    </div>
-                }
-            </div>
-            <div className="food-item-info">
-                <div className="food-item-name-rating">
-                    <p>{name}</p> 
-                    <img src={assets.rating_starts} alt="" />
-                </div>
-                <p className="food-item-desc">{description}</p>
-                <p className="food-item-price">₹{price}</p>
-            </div>
+  const isVeg =
+    name.toLowerCase().includes('veg') ||
+    (description && description.toLowerCase().includes('veg')) ||
+    name.toLowerCase().includes('salad') ||
+    name.toLowerCase().includes('cake') ||
+    name.toLowerCase().includes('ice cream');
+
+  const handleCardClick = () => {
+    navigate(`/food/${id}`);
+  };
+
+  const handleLike = (e) => {
+    e.stopPropagation();
+    setLiked(!liked);
+  };
+
+  return (
+    <motion.div 
+      className='food-item' 
+      onClick={handleCardClick} 
+      title="Click to view details"
+      whileHover={{ y: -6, transition: { duration: 0.2 } }}
+    >
+      <div className='food-item-img-container'>
+        <img className='food-item-image' src={imageSrc} alt={name} />
+        
+        {/* Dietary Indicator */}
+        <span className={`food-diet-dot ${isVeg ? 'veg' : 'non-veg'}`}>
+          <span className="dot-inner"></span>
+        </span>
+
+        {/* Wishlist Heart Icon */}
+        <motion.button 
+          className={`food-heart-btn ${liked ? 'liked' : ''}`}
+          onClick={handleLike}
+          whileTap={{ scale: 0.75 }}
+          title={liked ? "Remove from favorites" : "Save to favorites"}
+        >
+          {liked ? "❤️" : "🤍"}
+        </motion.button>
+
+        {/* Counter / Add controls */}
+        {!cartItems[id] ? (
+          <motion.img
+            className='add'
+            whileTap={{ scale: 0.85 }}
+            whileHover={{ scale: 1.1 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              addToCart(id);
+            }}
+            src={assets.add_icon_white}
+            alt="Add to cart"
+            title="Add to cart"
+          />
+        ) : (
+          <div className="food-item-counter" onClick={(e) => e.stopPropagation()}>
+            <motion.img
+              whileTap={{ scale: 0.85 }}
+              src={assets.remove_icon_red}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFromCart(id);
+              }}
+              alt="Remove"
+            />
+            <p>{cartItems[id]}</p>
+            <motion.img
+              whileTap={{ scale: 0.85 }}
+              src={assets.add_icon_green}
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(id);
+              }}
+              alt="Add"
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="food-item-info">
+        <div className="food-item-name-rating">
+          <p className="food-name-text">{name}</p>
+          <img src={assets.rating_starts} alt="Rating" />
         </div>
-    )
-}
+        <p className="food-item-desc">{description}</p>
+        <div className="food-item-footer">
+          <p className="food-item-price">₹{price}</p>
+          <span className="view-details-hint">View details →</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
-export default FoodItem
+export default FoodItem;

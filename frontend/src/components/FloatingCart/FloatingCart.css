@@ -1,0 +1,104 @@
+.floating-cart-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 90;
+  width: 90%;
+  max-width: 460px;
+}
+
+.floating-cart-pill {
+  background: #ffffff;
+  border: 2px solid #e11d62;
+  border-radius: 50px;
+  padding: 10px 14px 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 16px 40px rgba(225, 29, 98, 0.22), 0 0 24px rgba(245, 158, 11, 0.3);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+}
+
+.floating-cart-pill:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 45px rgba(225, 29, 98, 0.3), 0 0 30px rgba(245, 158, 11, 0.4);
+}
+
+.floating-cart-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.floating-cart-icon {
+  font-size: 24px;
+  background: #fff0f3;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(225, 29, 98, 0.2);
+}
+
+.floating-cart-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-item-count {
+  font-size: 11.5px;
+  color: #64748b;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.floating-total-price {
+  font-size: 19px;
+  font-weight: 800;
+  color: #e11d62;
+  margin: 0;
+}
+
+.floating-cart-btn {
+  background: linear-gradient(135deg, #e11d62 0%, #f43f5e 100%);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(225, 29, 98, 0.35);
+}
+
+.arrow-icon {
+  font-size: 13px;
+  transition: transform 0.2s;
+}
+
+.floating-cart-pill:hover .arrow-icon {
+  transform: translateX(3px);
+}
+
+@media (max-width: 600px) {
+  .floating-cart-container {
+    bottom: 16px;
+    width: 94%;
+  }
+  .floating-cart-pill {
+    padding: 8px 10px 8px 16px;
+  }
+  .floating-total-price {
+    font-size: 17px;
+  }
+}

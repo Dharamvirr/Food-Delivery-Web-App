@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react'
 import './LoginPopup.css'
 import { assets } from '../../assets/assets'
-// import { StoreContext } from '../../Context/StoreContext'
 import axios from 'axios'
 import { StoreContext } from '../../context/StoreContext'
-// import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 
 const LoginPopup = ({ setShowLogin }) => {
 
@@ -41,7 +40,7 @@ const LoginPopup = ({ setShowLogin }) => {
             setShowLogin(false)
         }
         else {
-            alert(response.data.message)
+            toast.error(response.data.message)
         }
     }
 
