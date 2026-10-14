@@ -5,7 +5,9 @@ A full-stack, responsive food ordering application built with **React**, **Node.
 ---
 
 ## 🚀 Live Demo & Links
-- **Frontend App:** [https://food-del-final-two.vercel.app/](https://food-del-final-two.vercel.app/)
+- **Frontend App (Live):** [https://food-delivery-web-app-tau.vercel.app/](https://food-delivery-web-app-tau.vercel.app/)
+- **Backend API (Render):** [https://food-del-backend-ihmv.onrender.com/](https://food-del-backend-ihmv.onrender.com/)
+- **GitHub Repository:** [https://github.com/Dharamvirr/Food-Delivery-Web-App](https://github.com/Dharamvirr/Food-Delivery-Web-App)
 
 ---
 
