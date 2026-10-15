@@ -32,15 +32,22 @@ const LoginPopup = ({ setShowLogin }) => {
         else {
             new_url += "/api/user/register"
         }
-        const response = await axios.post(new_url, data);
-        if (response.data.success) {
-            setToken(response.data.token)
-            localStorage.setItem("token", response.data.token)
-          
-            setShowLogin(false)
-        }
-        else {
-            toast.error(response.data.message)
+
+        try {
+            const response = await axios.post(new_url, data);
+            if (response.data.success) {
+                setToken(response.data.token)
+                localStorage.setItem("token", response.data.token)
+                toast.success(currState === "Login" ? "Logged in successfully! Welcome back." : "Account created successfully!");
+                setShowLogin(false)
+            }
+            else {
+                toast.error(response.data.message || "Authentication failed")
+            }
+        } catch (error) {
+            console.error("Auth error:", error);
+            const errMsg = error.response?.data?.message || "Failed to reach server. Please check your connection.";
+            toast.error(errMsg);
         }
     }
 
