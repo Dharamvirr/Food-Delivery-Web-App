@@ -150,7 +150,7 @@ const PlaceOrder = () => {
                 name="email"
                 onChange={onChangeHandler}
                 value={data.email}
-                placeholder="your.email@example.com"
+                placeholder="dharamvir78914@gmail.com"
                 required
               />
             </div>
@@ -224,7 +224,7 @@ const PlaceOrder = () => {
                 name="phone"
                 onChange={onChangeHandler}
                 value={data.phone}
-                placeholder="+91 98765 43210"
+                placeholder="+91-6350113604"
                 required
               />
             </div>

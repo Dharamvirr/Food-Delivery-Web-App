@@ -1,7 +1,8 @@
 {
-  "name": "frontent",
+  "name": "frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "author": "Dharamvir Singh <dharamvir78914@gmail.com>",
   "type": "module",
   "scripts": {
     "dev": "vite",

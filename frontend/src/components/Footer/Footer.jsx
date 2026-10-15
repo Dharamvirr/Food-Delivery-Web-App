@@ -35,14 +35,20 @@ const Footer = () => {
         <div className="footer-content-right">
             <h2>GET IN TOUCH</h2>
             <ul>
-                <li>📞 +91 98765 43210</li>
-                <li>✉️ support@tomato.com</li>
-                <li>📍 Koramangala, Bengaluru, India</li>
+                <li>
+                  <a href="tel:+916350113604">📞 +91-6350113604</a>
+                </li>
+                <li>
+                  <a href="mailto:dharamvir78914@gmail.com">✉️ dharamvir78914@gmail.com</a>
+                </li>
+                <li>📍 Prayagraj / Bengaluru, India</li>
             </ul>
         </div>
       </div>
       <hr />
-      <p className="footer-copyright">Copyright 2026 © Tomato.com — Crafted for delightful food ordering.</p>
+      <p className="footer-copyright">
+        Copyright 2026 © Tomato — Designed & Built with ❤️ by <b>Dharamvir Singh</b>.
+      </p>
     </div>
   )
 }

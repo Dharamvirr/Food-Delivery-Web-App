@@ -7,7 +7,7 @@
     "start": "node server.js",
     "server": "nodemon server.js"
   },
-  "author": "",
+  "author": "Dharamvir Singh <dharamvir78914@gmail.com>",
   "license": "ISC",
   "description": "",
   "dependencies": {

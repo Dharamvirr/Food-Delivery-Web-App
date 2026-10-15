@@ -114,5 +114,15 @@ npm run dev       # Starts Vite dev server at http://localhost:5173
 
 ---
 
+## 👨‍💻 Author & Contact
+
+**Dharamvir Singh**  
+- **Email:** [dharamvir78914@gmail.com](mailto:dharamvir78914@gmail.com)  
+- **Phone:** [+91-6350113604](tel:+916350113604)  
+- **Portfolio:** [https://dharamvir-singh.vercel.app](https://dharamvir-singh.vercel.app)  
+- **GitHub:** [@Dharamvirr](https://github.com/Dharamvirr)  
+
+---
+
 ## 📄 License
 This project is open-source and available under the ISC License.

@@ -48,6 +48,16 @@
   color: #f43f5e;
 }
 
+.footer-content-right ul li a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-content-right ul li a:hover {
+  color: #f43f5e;
+}
+
 .footer-content-left h2,
 .footer-content-center h2,
 .footer-content-right h2 {
