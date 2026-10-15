@@ -107,6 +107,125 @@
   box-shadow: 0 0 0 3px rgba(225, 29, 98, 0.15);
 }
 
+/* 1-Click Saved Addresses */
+.saved-addresses-selector {
+  margin-bottom: 22px;
+  background: #fff8f9;
+  border: 1.5px dashed rgba(225, 29, 98, 0.3);
+  padding: 16px;
+  border-radius: 14px;
+}
+
+.saved-addresses-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #e11d62;
+  margin: 0 0 12px;
+}
+
+.saved-addresses-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.address-chip-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.address-chip-card:hover {
+  border-color: #e11d62;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(225, 29, 98, 0.1);
+}
+
+.address-chip-card.active {
+  border-color: #e11d62;
+  background: #fff0f5;
+  box-shadow: 0 4px 14px rgba(225, 29, 98, 0.18);
+}
+
+.chip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.chip-label {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #e11d62;
+  text-transform: uppercase;
+}
+
+.chip-delete-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.chip-delete-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.chip-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 4px;
+}
+
+.chip-street {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip-phone {
+  font-size: 11.5px;
+  color: #475569;
+  font-weight: 600;
+  margin: 0;
+}
+
+.save-address-checkbox-row {
+  margin-top: 10px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.save-address-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+}
+
+.save-address-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #e11d62;
+  cursor: pointer;
+}
+
 /* Summary Column */
 .checkout-summary-card {
   background: #ffffff;

@@ -456,6 +456,138 @@
   border-radius: 20px;
 }
 
+/* Review Form Box */
+.add-review-card {
+  background: #fff8f9;
+  border: 1.5px dashed rgba(225, 29, 98, 0.35);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.add-review-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 14px;
+}
+
+.review-form-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.review-form-stars-row label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.star-rating-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: transform 0.15s ease;
+  filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.2));
+}
+
+.star-btn:hover {
+  transform: scale(1.25);
+}
+
+.review-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(225, 29, 98, 0.2);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0f172a;
+  background: #ffffff;
+  outline: none;
+  resize: vertical;
+  min-height: 85px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  margin-bottom: 14px;
+}
+
+.review-textarea:focus {
+  border-color: #e11d62;
+  box-shadow: 0 0 0 3px rgba(225, 29, 98, 0.12);
+}
+
+.review-submit-btn {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #e11d62 0%, #be123c 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(225, 29, 98, 0.3);
+}
+
+.review-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(225, 29, 98, 0.4);
+}
+
+.review-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.review-login-prompt {
+  background: #fff8f9;
+  border: 1.5px dashed rgba(225, 29, 98, 0.3);
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-login-prompt p {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.review-login-btn {
+  padding: 8px 18px;
+  background: #e11d62;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.empty-reviews-box {
+  text-align: center;
+  padding: 30px 20px;
+  color: #64748b;
+  font-size: 14px;
+  grid-column: 1 / -1;
+}
+
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

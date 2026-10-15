@@ -5,7 +5,7 @@ import { StoreContext } from '../../context/StoreContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FoodDisplay = ({ category }) => {
-  const { food_list, loadingFood, isFetchingMore, fetchMoreFood } = useContext(StoreContext);
+  const { food_list, loadingFood, isFetchingMore, fetchMoreFood, favorites, isFavoriteFilter, setIsFavoriteFilter } = useContext(StoreContext);
   const [vegOnly, setVegOnly] = useState(false);
   const [sortBy, setSortBy] = useState('default');
   const [visibleCount, setVisibleCount] = useState(8);
@@ -19,16 +19,17 @@ const FoodDisplay = ({ category }) => {
     }
   };
 
-  // Reset pagination to first batch whenever category, veg filter, or sort changes
+  // Reset pagination to first batch whenever category, veg filter, favorites filter, or sort changes
   useEffect(() => {
     setVisibleCount(8);
-  }, [category, vegOnly, sortBy]);
+  }, [category, vegOnly, isFavoriteFilter, sortBy]);
 
   let filteredList = food_list.filter((item) => {
     const matchesCategory = category === 'All' || item.category === category;
     const isVeg = item.category === 'Pure Veg' || item.name.toLowerCase().includes('veg');
     const matchesDiet = !vegOnly || isVeg;
-    return matchesCategory && matchesDiet;
+    const matchesFavorite = !isFavoriteFilter || (favorites && favorites.includes(String(item._id)));
+    return matchesCategory && matchesDiet && matchesFavorite;
   });
 
   if (sortBy === 'price-low') {
@@ -48,14 +49,22 @@ const FoodDisplay = ({ category }) => {
     <div className='food-display' id='food-display'>
       <div className="food-display-header">
         <div>
-          <h2>Top Dishes Near You</h2>
+          <h2>{isFavoriteFilter ? "Your Favorite Dishes ❤️" : "Top Dishes Near You"}</h2>
           <p className="food-display-subtitle">
-            Showing {loadedCount} of {filteredList.length} {filteredList.length === 1 ? 'dish' : 'dishes'} in {category === 'All' ? 'All Cuisines' : category}
+            Showing {loadedCount} of {filteredList.length} {filteredList.length === 1 ? 'dish' : 'dishes'} {isFavoriteFilter ? 'in your wishlist' : `in ${category === 'All' ? 'All Cuisines' : category}`}
           </p>
         </div>
 
         {/* Quick Filter Bar */}
         <div className="food-filter-controls">
+          <button 
+            className={`food-fav-filter-btn ${isFavoriteFilter ? 'active' : ''}`}
+            onClick={() => setIsFavoriteFilter(!isFavoriteFilter)}
+            title="Show dishes saved to your wishlist"
+          >
+            {isFavoriteFilter ? "❤️ Favorites Active" : `🤍 Favorites (${favorites ? favorites.length : 0})`}
+          </button>
+
           <button 
             className={`food-veg-filter-btn ${vegOnly ? 'active' : ''}`}
             onClick={() => setVegOnly(!vegOnly)}
@@ -92,7 +101,11 @@ const FoodDisplay = ({ category }) => {
         </div>
       ) : filteredList.length === 0 ? (
         <div className="food-display-empty">
-          <p>No dishes match the selected filter. Try disabling "Pure Veg" or picking another category.</p>
+          {isFavoriteFilter ? (
+            <p>You haven't saved any favorite dishes yet! Click the ❤️ icon on any dish to save it here for fast ordering.</p>
+          ) : (
+            <p>No dishes match the selected filter. Try disabling "Pure Veg" or picking another category.</p>
+          )}
         </div>
       ) : (
         <>

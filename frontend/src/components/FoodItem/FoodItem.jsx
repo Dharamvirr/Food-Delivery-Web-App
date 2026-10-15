@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const FoodItem = ({ id, name, price, description, image }) => {
-  const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
-  const [liked, setLiked] = useState(false);
+  const { cartItems, addToCart, removeFromCart, url, favorites, toggleFavorite } = useContext(StoreContext);
   const navigate = useNavigate();
+
+  const isFavorite = favorites && favorites.includes(String(id));
 
   const imageSrc = getFoodImageUrl(image, url);
 
@@ -25,7 +26,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
 
   const handleLike = (e) => {
     e.stopPropagation();
-    setLiked(!liked);
+    toggleFavorite(id);
   };
 
   return (
@@ -45,12 +46,12 @@ const FoodItem = ({ id, name, price, description, image }) => {
 
         {/* Wishlist Heart Icon */}
         <motion.button 
-          className={`food-heart-btn ${liked ? 'liked' : ''}`}
+          className={`food-heart-btn ${isFavorite ? 'liked' : ''}`}
           onClick={handleLike}
           whileTap={{ scale: 0.75 }}
-          title={liked ? "Remove from favorites" : "Save to favorites"}
+          title={isFavorite ? "Remove from favorites" : "Save to favorites"}
         >
-          {liked ? "❤️" : "🤍"}
+          {isFavorite ? "❤️" : "🤍"}
         </motion.button>
 
         {/* Counter / Add controls */}

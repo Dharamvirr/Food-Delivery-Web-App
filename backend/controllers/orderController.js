@@ -70,7 +70,14 @@ const placeOrderCod = async (req, res) => {
     });
     await newOrder.save();
     await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
-    res.json({ success: true, message: "Order Placed Successfully (Cash on Delivery)" });
+
+    // Real-time notification for admin & user
+    const io = req.app.get("io");
+    if (io) {
+      io.emit("new_order", { order: newOrder });
+    }
+
+    res.json({ success: true, message: "Order Placed Successfully (Cash on Delivery)", orderId: newOrder._id });
   } catch (error) {
     console.error("COD order error:", error);
     res.json({ success: false, message: "Error placing COD order" });
@@ -93,7 +100,11 @@ const verifyOrder = async (req, res) => {
   const { orderId, success } = req.body;
   try {
     if (success === "true") {
-      await orderModel.findByIdAndUpdate(orderId, { payment: true });
+      const verifiedOrder = await orderModel.findByIdAndUpdate(orderId, { payment: true }, { new: true });
+      const io = req.app.get("io");
+      if (io) {
+        io.emit("new_order", { order: verifiedOrder });
+      }
       res.json({ success: true, message: "Paid" });
     } else {
       await orderModel.findByIdAndDelete(orderId);
@@ -116,11 +127,27 @@ const listOrders = async (req, res) => {
   }
 };
 
-// Update order status
+// Update order status with real-time WebSocket broadcast
 const updateStatus = async (req, res) => {
   try {
-    await orderModel.findByIdAndUpdate(req.body.orderId, { status: req.body.status });
-    res.json({ success: true, message: "Status Updated" });
+    const updatedOrder = await orderModel.findByIdAndUpdate(
+      req.body.orderId, 
+      { status: req.body.status },
+      { new: true }
+    );
+
+    // Broadcast real-time event to connected clients via Socket.IO
+    const io = req.app.get("io");
+    if (io) {
+      io.emit("order_status_updated", {
+        orderId: req.body.orderId,
+        status: req.body.status,
+        userId: updatedOrder ? updatedOrder.userId : null,
+        order: updatedOrder
+      });
+    }
+
+    res.json({ success: true, message: "Status Updated", order: updatedOrder });
   } catch (error) {
     console.error("Update status error:", error);
     res.json({ success: false, message: "Error updating status" });

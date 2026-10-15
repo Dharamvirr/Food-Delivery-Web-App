@@ -11,7 +11,7 @@ const Navbar = ({ setShowLogin }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef(null);
-  const { cartItems, token, setToken, getTotalCartAmount } = useContext(StoreContext);
+  const { cartItems, token, setToken, getTotalCartAmount, favorites, setIsFavoriteFilter } = useContext(StoreContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,6 +31,19 @@ const Navbar = ({ setShowLogin }) => {
     localStorage.removeItem("token");
     setToken("");
     navigate("/");
+  };
+
+  const handleOpenFavorites = () => {
+    setIsFavoriteFilter(true);
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
+    setTimeout(() => {
+      const el = document.getElementById("food-display");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 150);
   };
 
   const handleNavClick = (sectionId, menuName) => {
@@ -103,6 +116,18 @@ const Navbar = ({ setShowLogin }) => {
             <span className="search-hint-text">Search...</span>
           </div>
 
+          {/* Quick Wishlist / Favorites Button */}
+          <button 
+            className="navbar-fav-btn" 
+            onClick={handleOpenFavorites}
+            title={`View Favorites (${favorites ? favorites.length : 0})`}
+          >
+            <span className="fav-heart-icon">❤️</span>
+            {favorites && favorites.length > 0 && (
+              <span className="navbar-fav-badge">{favorites.length}</span>
+            )}
+          </button>
+
           <Link to='/cart' className="navbar-cart-pill-btn" title="View Cart">
             <div className="cart-icon-wrapper">
               <ShoppingBag size={20} className="navbar-cart-svg" />
@@ -126,6 +151,10 @@ const Navbar = ({ setShowLogin }) => {
             >
               <img src={assets.profile_icon} alt="Profile" />
               <ul className='navbar-profile-dropdown' onClick={(e) => e.stopPropagation()}>
+                <li onClick={() => { setIsProfileOpen(false); handleOpenFavorites(); }}>
+                  <span style={{ fontSize: "16px", marginRight: "8px" }}>❤️</span> <p>My Wishlist ({favorites ? favorites.length : 0})</p>
+                </li>
+                <hr />
                 <li onClick={() => { setIsProfileOpen(false); navigate('/myorders'); }}>
                   <img src={assets.bag_icon} alt="Orders" /> <p>My Orders</p>
                 </li>

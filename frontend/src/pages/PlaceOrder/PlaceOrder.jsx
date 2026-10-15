@@ -22,13 +22,53 @@ const PlaceOrder = () => {
     phone: ''
   });
 
-  const { getTotalCartAmount, token, setCartItems, deliveryCharge, food_list, cartItems, url, discount } =
-    useContext(StoreContext);
+  const { 
+    getTotalCartAmount, 
+    token, 
+    setCartItems, 
+    deliveryCharge, 
+    food_list, 
+    cartItems, 
+    url, 
+    discount,
+    savedAddresses,
+    saveNewAddress,
+    deleteSavedAddress 
+  } = useContext(StoreContext);
   const navigate = useNavigate();
+
+  const [saveAddressForFuture, setSaveAddressForFuture] = useState(true);
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
+
+  const selectAddress = (index) => {
+    const addr = savedAddresses[index];
+    if (addr) {
+      setSelectedAddressIndex(index);
+      setData({
+        firstName: addr.firstName || '',
+        lastName: addr.lastName || '',
+        email: addr.email || '',
+        street: addr.street || '',
+        city: addr.city || '',
+        state: addr.state || '',
+        zipcode: addr.zipcode || '',
+        country: addr.country || 'India',
+        phone: addr.phone || ''
+      });
+      toast.info(`1-Click Selected: "${addr.label || 'Saved'}" address 🏠`);
+    }
+  };
+
+  useEffect(() => {
+    if (savedAddresses && savedAddresses.length > 0 && selectedAddressIndex === null && !data.street) {
+      selectAddress(0);
+    }
+  }, [savedAddresses]);
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
     const value = event.target.value;
+    setSelectedAddressIndex(null);
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -60,6 +100,10 @@ const PlaceOrder = () => {
       items: orderItems,
       amount: finalAmount
     };
+
+    if (saveAddressForFuture && saveNewAddress) {
+      saveNewAddress(data);
+    }
 
     try {
       if (payment === 'stripe') {
@@ -116,6 +160,45 @@ const PlaceOrder = () => {
             <span className="section-number">1</span>
             <h3>Delivery Address</h3>
           </div>
+
+          {/* 1-Click Saved Addresses Picker */}
+          {savedAddresses && savedAddresses.length > 0 && (
+            <div className="saved-addresses-selector">
+              <p className="saved-addresses-title">⚡ 1-Click Saved Addresses:</p>
+              <div className="saved-addresses-chips">
+                {savedAddresses.map((addr, idx) => (
+                  <div 
+                    key={addr._id || idx}
+                    className={`address-chip-card ${selectedAddressIndex === idx ? 'active' : ''}`}
+                    onClick={() => selectAddress(idx)}
+                  >
+                    <div className="chip-header">
+                      <span className="chip-label">
+                        {addr.label === 'Work' ? '🏢 Work' : addr.label === 'Other' ? '📍 Other' : '🏠 Home'}
+                      </span>
+                      {addr._id && (
+                        <button 
+                          type="button" 
+                          className="chip-delete-btn" 
+                          title="Delete saved address"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteSavedAddress(addr._id);
+                            if (selectedAddressIndex === idx) setSelectedAddressIndex(null);
+                          }}
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                    <p className="chip-name">{addr.firstName} {addr.lastName}</p>
+                    <p className="chip-street">{addr.street}, {addr.city}</p>
+                    <p className="chip-phone">📞 {addr.phone}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="form-fields-group">
             <div className="input-row-half">
@@ -227,6 +310,18 @@ const PlaceOrder = () => {
                 placeholder="+91-6350113604"
                 required
               />
+            </div>
+
+            {/* Checkbox to persist in profile */}
+            <div className="save-address-checkbox-row">
+              <label className="save-address-label">
+                <input 
+                  type="checkbox" 
+                  checked={saveAddressForFuture} 
+                  onChange={(e) => setSaveAddressForFuture(e.target.checked)} 
+                />
+                <span>💾 Save this address for 1-Click fast checkout</span>
+              </label>
             </div>
           </div>
         </div>

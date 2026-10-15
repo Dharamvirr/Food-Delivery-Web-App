@@ -99,6 +99,52 @@
   font-weight: 500;
 }
 
+/* Navbar Wishlist / Favorites Pill Button */
+.navbar-fav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(225, 29, 98, 0.2);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(225, 29, 98, 0.08);
+}
+
+.navbar-fav-btn:hover {
+  background: #fff0f5;
+  border-color: #e11d62;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 14px rgba(225, 29, 98, 0.25);
+}
+
+.fav-heart-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.navbar-fav-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: linear-gradient(135deg, #e11d62 0%, #be123c 100%);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(225, 29, 98, 0.4);
+}
+
 /* Sleek Gamesberry Cherry Cart Pill Button */
 .navbar-cart-pill-btn {
   display: flex;

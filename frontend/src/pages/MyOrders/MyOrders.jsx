@@ -5,11 +5,12 @@ import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import confetti from 'canvas-confetti';
 
 const MyOrders = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { url, token, currency } = useContext(StoreContext);
+  const { url, token, currency, socket } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const fetchOrders = async () => {
@@ -32,6 +33,43 @@ const MyOrders = () => {
     }
   }, [token]);
 
+  // Real-time live order status streaming via WebSockets
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleStatusUpdate = (payload) => {
+      console.log("[WebSocket] Live order update received:", payload);
+      if (!payload || !payload.orderId) return;
+
+      setData((prevOrders) =>
+        prevOrders.map((ord) => {
+          if (String(ord._id) === String(payload.orderId)) {
+            return { ...ord, status: payload.status };
+          }
+          return ord;
+        })
+      );
+
+      const shortId = String(payload.orderId).slice(-6).toUpperCase();
+      if (payload.status === "Delivered") {
+        confetti({
+          particleCount: 130,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+        toast.success(`🎉 Hurray! Order #${shortId} has been Delivered! Enjoy your meal! 🍽️`);
+      } else {
+        toast.info(`🔔 Live Update: Order #${shortId} is now "${payload.status}"!`);
+      }
+    };
+
+    socket.on("order_status_updated", handleStatusUpdate);
+
+    return () => {
+      socket.off("order_status_updated", handleStatusUpdate);
+    };
+  }, [socket]);
+
   const getStepIndex = (status) => {
     const s = (status || '').toLowerCase();
     if (s.includes('delivered')) return 4;
@@ -44,8 +82,13 @@ const MyOrders = () => {
     <div className='my-orders-page'>
       <div className="orders-header-row">
         <div>
-          <h2>Your Orders</h2>
-          <p className="orders-subtitle">Track your live food deliveries and order history</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <h2>Your Orders</h2>
+            <span className="live-status-pulse-badge" title="Real-time WebSockets connected">
+              <span className="live-pulse-dot"></span> Live Sync
+            </span>
+          </div>
+          <p className="orders-subtitle">Track your live food deliveries and order history in real-time</p>
         </div>
         <button 
           className="refresh-orders-btn" 
@@ -55,7 +98,7 @@ const MyOrders = () => {
           }}
           disabled={loading}
         >
-          {loading ? "Updating..." : "🔄 Refresh Status"}
+          {loading ? "Updating..." : "🔄 Refresh"}
         </button>
       </div>
 

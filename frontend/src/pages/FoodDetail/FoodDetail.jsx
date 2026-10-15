@@ -5,12 +5,26 @@ import { StoreContext } from '../../context/StoreContext';
 import { toast } from 'react-toastify';
 import FoodItem from '../../components/FoodItem/FoodItem';
 import { getFoodImageUrl } from '../../assets/assets';
+import axios from 'axios';
+import confetti from 'canvas-confetti';
 
 const FoodDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { food_list, cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
+  const { food_list, cartItems, addToCart, removeFromCart, url, token } = useContext(StoreContext);
   const [selectedQty, setSelectedQty] = useState(1);
+
+  // Dynamic MongoDB Reviews State
+  const [reviews, setReviews] = useState([]);
+  const [averageRating, setAverageRating] = useState(4.8);
+  const [totalReviews, setTotalReviews] = useState(0);
+  const [loadingReviews, setLoadingReviews] = useState(false);
+
+  // Review Form State
+  const [newRating, setNewRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [newComment, setNewComment] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   // Scroll to top when page opens or id changes
   useEffect(() => {
@@ -18,6 +32,75 @@ const FoodDetail = () => {
   }, [id]);
 
   const foodItem = food_list.find((item) => String(item._id) === String(id));
+
+  // Fetch real reviews from MongoDB Atlas
+  const fetchDishReviews = async () => {
+    if (!foodItem) return;
+    setLoadingReviews(true);
+    try {
+      const res = await axios.get(`${url}/api/review/${foodItem._id}`);
+      if (res.data && res.data.success) {
+        setReviews(res.data.reviews || []);
+        setAverageRating(res.data.averageRating || 4.8);
+        setTotalReviews(res.data.totalReviews || 0);
+      }
+    } catch (err) {
+      console.error('Fetch reviews error:', err);
+    } finally {
+      setLoadingReviews(false);
+    }
+  };
+
+  useEffect(() => {
+    if (foodItem) {
+      fetchDishReviews();
+    }
+  }, [id, foodItem]);
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!token) {
+      toast.info('Please sign in to submit a review ⭐');
+      return;
+    }
+
+    if (!newComment.trim()) {
+      toast.warn('Please write a few words about your dining experience!');
+      return;
+    }
+
+    setSubmittingReview(true);
+    try {
+      const res = await axios.post(
+        `${url}/api/review/add`,
+        {
+          foodId: String(foodItem._id),
+          rating: newRating,
+          comment: newComment.trim(),
+        },
+        { headers: { token } }
+      );
+
+      if (res.data && res.data.success) {
+        confetti({
+          particleCount: 90,
+          spread: 70,
+          origin: { y: 0.7 },
+        });
+        toast.success(res.data.message || 'Thank you! Your review is now live ⭐');
+        setNewComment('');
+        setNewRating(5);
+        await fetchDishReviews();
+      } else {
+        toast.error(res.data.message || 'Failed to submit review');
+      }
+    } catch (err) {
+      console.error('Submit review error:', err);
+      toast.error('Could not submit review. Please try again.');
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   if (!foodItem) {
     return (
@@ -54,30 +137,33 @@ const FoodDetail = () => {
     'Fresh Herbs'
   ];
 
-  // Dummy customer reviews
-  const dummyReviews = [
+  // Default fallback starter reviews if no reviews are stored yet in DB
+  const defaultReviews = [
     {
-      name: 'Aditi Sharma',
-      avatar: '👩',
+      _id: 'def1',
+      userName: 'Aditi Sharma',
       rating: 5,
-      date: '2 days ago',
+      createdAt: '2026-10-13T10:00:00.000Z',
       comment: 'Super fresh and flavorful! Delivered piping hot within 25 minutes. Definitely ordering again!'
     },
     {
-      name: 'Rahul Verma',
-      avatar: '👨',
+      _id: 'def2',
+      userName: 'Rahul Verma',
       rating: 5,
-      date: '1 week ago',
-      comment: 'The presentation and taste were restaurant-grade. Loved the packaging and seasoning.'
+      createdAt: '2026-10-10T14:30:00.000Z',
+      comment: 'The presentation and taste were restaurant-grade. Loved the seasoning and crispy texture!'
     },
     {
-      name: 'Pooja Nair',
-      avatar: '👩‍🦰',
+      _id: 'def3',
+      userName: 'Pooja Nair',
       rating: 4,
-      date: '2 weeks ago',
-      comment: 'Generous portion size and authentic flavor. Highly recommended for weekend cravings!'
+      createdAt: '2026-10-06T19:15:00.000Z',
+      comment: 'Generous portion size and authentic spice profile. Highly recommended for weekend cravings!'
     }
   ];
+
+  const displayReviews = reviews.length > 0 ? reviews : defaultReviews;
+  const displayCount = reviews.length > 0 ? totalReviews : defaultReviews.length;
 
   // Related items from same category
   const relatedDishes = food_list
@@ -123,9 +209,9 @@ const FoodDetail = () => {
         <div className="detail-info-section">
           <div className="detail-category-row">
             <span className="detail-category-pill">{foodItem.category}</span>
-            <div className="detail-rating-pill">
-              <span>⭐ 4.8</span>
-              <span className="review-count">(148 reviews)</span>
+            <div className="detail-rating-pill" title={`Dynamic score calculated from ${displayCount} reviews`}>
+              <span>⭐ {averageRating}</span>
+              <span className="review-count">({displayCount} {displayCount === 1 ? 'review' : 'reviews'})</span>
             </div>
           </div>
 
@@ -212,28 +298,94 @@ const FoodDetail = () => {
         </div>
       </div>
 
-      {/* Customer Reviews Section */}
+      {/* Customer Reviews & Live Rating Section */}
       <div className="detail-reviews-section">
         <div className="section-header-row">
-          <h3>Customer Reviews (148)</h3>
+          <div>
+            <h3>Customer Reviews ({displayCount})</h3>
+            <span style={{ fontSize: '13px', color: '#64748b' }}>
+              Average Diner Score: <b style={{ color: '#e11d62' }}>⭐ {averageRating} / 5.0</b>
+            </span>
+          </div>
           <span className="verified-badge">✓ 100% Verified Diners</span>
         </div>
+
+        {/* Interactive Review Form */}
+        {token ? (
+          <form onSubmit={handleSubmitReview} className="add-review-card">
+            <h4 className="add-review-title">✍️ Leave Your Rating & Review</h4>
+            <div className="review-form-stars-row">
+              <label>Select Rating:</label>
+              <div className="star-rating-buttons">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    className="star-btn"
+                    onClick={() => setNewRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    title={`Rate ${star} Stars`}
+                  >
+                    {star <= (hoverRating || newRating) ? '⭐' : '☆'}
+                  </button>
+                ))}
+              </div>
+              <span style={{ fontSize: '14px', fontWeight: '700', color: '#e11d62', marginLeft: '8px' }}>
+                {hoverRating || newRating} / 5 Stars
+              </span>
+            </div>
+
+            <textarea
+              className="review-textarea"
+              placeholder="What did you love about this dish? How was the taste, packaging, and temperature?"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              required
+            ></textarea>
+
+            <button type="submit" className="review-submit-btn" disabled={submittingReview}>
+              {submittingReview ? 'Submitting Review...' : 'Post Review ⭐'}
+            </button>
+          </form>
+        ) : (
+          <div className="review-login-prompt">
+            <p>Hungry to share your feedback? Sign in to rate and review this dish.</p>
+            <button className="review-login-btn" onClick={() => toast.info('Please click "Sign In" in the navbar!')}>
+              Sign In to Review
+            </button>
+          </div>
+        )}
+
+        {/* Reviews Grid */}
         <div className="reviews-grid">
-          {dummyReviews.map((rev, idx) => (
-            <div key={idx} className="review-card">
-              <div className="review-top-row">
-                <div className="rev-user">
-                  <span className="rev-avatar">{rev.avatar}</span>
-                  <div>
-                    <p className="rev-name">{rev.name}</p>
-                    <p className="rev-date">{rev.date}</p>
+          {displayReviews.map((rev, idx) => {
+            const dateStr = rev.createdAt
+              ? new Date(rev.createdAt).toLocaleDateString('en-IN', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                })
+              : 'Recently';
+
+            return (
+              <div key={rev._id || idx} className="review-card">
+                <div className="review-top-row">
+                  <div className="rev-user">
+                    <span className="rev-avatar">👤</span>
+                    <div>
+                      <p className="rev-name">{rev.userName}</p>
+                      <p className="rev-date">{dateStr}</p>
+                    </div>
+                  </div>
+                  <div className="rev-stars" title={`${rev.rating} out of 5 stars`}>
+                    {'⭐'.repeat(rev.rating)}
                   </div>
                 </div>
-                <div className="rev-stars">{'⭐'.repeat(rev.rating)}</div>
+                <p className="rev-comment">"{rev.comment}"</p>
               </div>
-              <p className="rev-comment">"{rev.comment}"</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

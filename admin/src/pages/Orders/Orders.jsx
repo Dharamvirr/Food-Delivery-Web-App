@@ -3,6 +3,7 @@ import './Orders.css'
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { assets, url, currency } from '../../assets/assets';
+import { io } from 'socket.io-client';
 
 const Order = () => {
 
@@ -29,9 +30,25 @@ const Order = () => {
     }
   }
 
-
   useEffect(() => {
     fetchAllOrders();
+
+    const socket = io(url, {
+      transports: ["websocket", "polling"]
+    });
+
+    socket.on("new_order", (data) => {
+      toast.info("🔔 New food order received!");
+      fetchAllOrders();
+    });
+
+    socket.on("order_status_updated", (data) => {
+      setOrders(prev => prev.map(ord => String(ord._id) === String(data.orderId) ? { ...ord, status: data.status } : ord));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, [])
 
   return (
