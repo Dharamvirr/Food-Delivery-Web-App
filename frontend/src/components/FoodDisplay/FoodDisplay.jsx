@@ -5,10 +5,19 @@ import { StoreContext } from '../../context/StoreContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FoodDisplay = ({ category }) => {
-  const { food_list, loadingFood } = useContext(StoreContext);
+  const { food_list, loadingFood, isFetchingMore, fetchMoreFood } = useContext(StoreContext);
   const [vegOnly, setVegOnly] = useState(false);
   const [sortBy, setSortBy] = useState('default');
   const [visibleCount, setVisibleCount] = useState(8);
+
+  const handleLoadMore = () => {
+    const nextCount = visibleCount + 8;
+    setVisibleCount(nextCount);
+    const nextPage = Math.floor(visibleCount / 8) + 1;
+    if (fetchMoreFood) {
+      fetchMoreFood(nextPage, 8);
+    }
+  };
 
   // Reset pagination to first batch whenever category, veg filter, or sort changes
   useEffect(() => {
@@ -122,12 +131,19 @@ const FoodDisplay = ({ category }) => {
               {hasMore ? (
                 <motion.button 
                   className="food-load-more-btn"
-                  onClick={() => setVisibleCount((prev) => prev + 8)}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  onClick={handleLoadMore}
+                  disabled={isFetchingMore}
+                  whileHover={{ scale: isFetchingMore ? 1 : 1.03 }}
+                  whileTap={{ scale: isFetchingMore ? 1 : 0.97 }}
                 >
-                  <span>Load More Dishes (+{Math.min(8, filteredList.length - visibleCount)})</span>
-                  <span className="btn-arrow">➔</span>
+                  {isFetchingMore ? (
+                    <span>Fetching more dishes... 🍳</span>
+                  ) : (
+                    <>
+                      <span>Load More Dishes (+{Math.min(8, filteredList.length - visibleCount)})</span>
+                      <span className="btn-arrow">➔</span>
+                    </>
+                  )}
                 </motion.button>
               ) : (
                 <div className="food-all-loaded-badge">

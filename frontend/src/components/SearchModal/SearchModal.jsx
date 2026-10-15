@@ -3,6 +3,7 @@ import './SearchModal.css';
 import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getFoodImageUrl } from '../../assets/assets';
 
 const SearchModal = ({ isOpen, onClose }) => {
   const { food_list, addToCart, cartItems, removeFromCart, url } = useContext(StoreContext);
@@ -110,11 +111,7 @@ const SearchModal = ({ isOpen, onClose }) => {
               </div>
             ) : (
               filteredDishes.map((item, index) => {
-                const imageSrc =
-                  typeof item.image === 'string' &&
-                  (item.image.startsWith('http') || item.image.startsWith('/') || item.image.startsWith('data:'))
-                    ? item.image
-                    : `${url}/images/${item.image}`;
+                const imageSrc = getFoodImageUrl(item.image, url);
 
                 const isVeg = item.category === 'Pure Veg' || item.name.toLowerCase().includes('veg');
 

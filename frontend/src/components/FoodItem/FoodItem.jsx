@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './FoodItem.css';
-import { assets } from '../../assets/assets';
+import { assets, getFoodImageUrl } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -10,11 +10,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
   const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
 
-  const imageSrc =
-    typeof image === 'string' &&
-    (image.startsWith('http') || image.startsWith('/') || image.startsWith('data:'))
-      ? image
-      : `${url}/images/${image}`;
+  const imageSrc = getFoodImageUrl(image, url);
 
   const isVeg =
     name.toLowerCase().includes('veg') ||

@@ -3,6 +3,7 @@ import './AIChatBot.css';
 import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getFoodImageUrl } from '../../assets/assets';
 
 const AIChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -204,11 +205,7 @@ const AIChatBot = () => {
                     {msg.recommendations && msg.recommendations.length > 0 && (
                       <div className="ai-dishes-carousel">
                         {msg.recommendations.map((dish) => {
-                          const imageSrc =
-                            typeof dish.image === 'string' &&
-                            (dish.image.startsWith('http') || dish.image.startsWith('/') || dish.image.startsWith('data:'))
-                              ? dish.image
-                              : `${url}/images/${dish.image}`;
+                          const imageSrc = getFoodImageUrl(dish.image, url);
 
                           return (
                             <div key={dish._id} className="ai-dish-card">

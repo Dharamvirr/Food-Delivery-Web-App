@@ -87,6 +87,50 @@ export const assets = {
     un_checked
 }
 
+export const foodImagesMap = {
+    "food_1.png": food_1,
+    "food_2.png": food_2,
+    "food_3.png": food_3,
+    "food_4.png": food_4,
+    "food_5.png": food_5,
+    "food_6.png": food_6,
+    "food_7.png": food_7,
+    "food_8.png": food_8,
+    "food_9.png": food_9,
+    "food_10.png": food_10,
+    "food_11.png": food_11,
+    "food_12.png": food_12,
+    "food_13.png": food_13,
+    "food_14.png": food_14,
+    "food_15.png": food_15,
+    "food_16.png": food_16,
+    "food_17.png": food_17,
+    "food_18.png": food_18,
+    "food_19.png": food_19,
+    "food_20.png": food_20,
+    "food_21.png": food_21,
+    "food_22.png": food_22,
+    "food_23.png": food_23,
+    "food_24.png": food_24,
+    "food_25.png": food_25,
+    "food_26.png": food_26,
+    "food_27.png": food_27,
+    "food_28.png": food_28,
+    "food_29.png": food_29,
+    "food_30.png": food_30,
+    "food_31.png": food_31,
+    "food_32.png": food_32
+};
+
+export const getFoodImageUrl = (image, backendUrl = "") => {
+    if (!image) return food_1;
+    if (foodImagesMap[image]) return foodImagesMap[image];
+    if (typeof image === 'string' && (image.startsWith('http') || image.startsWith('/') || image.startsWith('data:'))) {
+        return image;
+    }
+    return backendUrl ? `${backendUrl}/images/${image}` : `/images/${image}`;
+};
+
 export const menu_list = [
     {
         menu_name: "Salad",

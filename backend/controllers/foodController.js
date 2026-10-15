@@ -2,16 +2,39 @@ import foodModel from "../models/foodModel.js";
 import fs from 'fs'
 
 
-// all food list
+// all food list with optional pagination & filtering
 const listFood = async (req, res) => {
     try {
-        const foods = await foodModel.find({})
-        res.json({ success: true, data: foods })
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+        const category = req.query.category;
+
+        const filter = {};
+        if (category && category !== 'All') {
+            filter.category = category;
+        }
+
+        const total = await foodModel.countDocuments(filter);
+
+        if (page && limit) {
+            const skip = (page - 1) * limit;
+            const foods = await foodModel.find(filter).skip(skip).limit(limit);
+            return res.json({ 
+                success: true, 
+                data: foods, 
+                total, 
+                page, 
+                limit, 
+                hasMore: skip + foods.length < total 
+            });
+        }
+
+        const foods = await foodModel.find(filter);
+        res.json({ success: true, data: foods, total, hasMore: false });
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: "Error" })
+        res.json({ success: false, message: "Error fetching foods" });
     }
-
 }
 
 

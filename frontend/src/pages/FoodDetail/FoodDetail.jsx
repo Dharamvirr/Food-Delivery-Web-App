@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import { toast } from 'react-toastify';
 import FoodItem from '../../components/FoodItem/FoodItem';
+import { getFoodImageUrl } from '../../assets/assets';
 
 const FoodDetail = () => {
   const { id } = useParams();
@@ -28,11 +29,7 @@ const FoodDetail = () => {
     );
   }
 
-  const imageSrc =
-    typeof foodItem.image === 'string' &&
-    (foodItem.image.startsWith('http') || foodItem.image.startsWith('/') || foodItem.image.startsWith('data:'))
-      ? foodItem.image
-      : `${url}/images/${foodItem.image}`;
+  const imageSrc = getFoodImageUrl(foodItem.image, url);
 
   const isVeg = foodItem.category === 'Pure Veg' || foodItem.name.toLowerCase().includes('veg');
   const originalPrice = Math.round(foodItem.price * 1.25); // Show realistic discount
