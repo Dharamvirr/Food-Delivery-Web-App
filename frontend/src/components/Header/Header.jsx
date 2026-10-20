@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Header.css";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { assets } from "../../assets/assets";
+import FoodCanvas3D from "../FoodCanvas3D/FoodCanvas3D";
 
 const HERO_DISHES = [
   {
@@ -215,27 +216,10 @@ const Header = () => {
               </div>
             </motion.div>
 
-            {/* Center: The Main 3D Floating Dish with Perspective */}
-            <motion.div 
-              key={activeDish.id}
-              className="spatial-dish-wrapper"
-              initial={{ opacity: 0, scale: 0.8, rotate: -8 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              whileHover={{ scale: 1.06 }}
-            >
-              <img 
-                src={activeDish.image} 
-                alt={activeDish.name} 
-                className="spatial-dish-img"
-              />
-              <div className="dish-glass-info-pill">
-                <span className="dish-pill-badge">{activeDish.badge}</span>
-                <p className="dish-pill-name">{activeDish.name}</p>
-                <span className="dish-pill-price">{activeDish.price}</span>
-              </div>
-            </motion.div>
+            {/* Center: Real 3D WebGL Canvas (Rotating Food Planet & Particle Rings) */}
+            <div className="spatial-canvas-anchor">
+              <FoodCanvas3D />
+            </div>
           </motion.div>
 
           {/* Interactive 3D Dish Selector Pills */}

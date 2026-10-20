@@ -1,0 +1,81 @@
+/* ===================================================
+   REAL 3D WEBGL CANVAS COMPONENT (THREE.JS)
+   =================================================== */
+
+.food-canvas-3d-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: grab;
+}
+
+.food-canvas-3d-wrapper:active {
+  cursor: grabbing;
+}
+
+.three-canvas-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.three-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+}
+
+/* Floating Interactive 3D Control Badge */
+.canvas-interactive-overlay {
+  position: absolute;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.three-control-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 11.5px;
+  color: #cbd5e1;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.three-control-badge b {
+  color: #fbbf24;
+}
+
+.rotate-3d-icon {
+  font-size: 13px;
+  animation: spinIcon 4s linear infinite;
+}
+
+@keyframes spinIcon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .food-canvas-3d-wrapper {
+    height: 340px;
+    max-width: 340px;
+  }
+}
