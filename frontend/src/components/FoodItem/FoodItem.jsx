@@ -15,7 +15,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
 
   const isFavorite = favorites && favorites.includes(String(id));
 
-  const imageSrc = getFoodImageUrl(image, url);
+  const imageSrc = getFoodImageUrl(image, url, name);
 
   const isVeg =
     name.toLowerCase().includes('veg') ||
@@ -67,7 +67,19 @@ const FoodItem = ({ id, name, price, description, image }) => {
       }}
     >
       <div className='food-item-img-container'>
-        <img className='food-item-image' src={imageSrc} alt={name} />
+        <img 
+          className='food-item-image' 
+          src={imageSrc} 
+          alt={name} 
+          loading="lazy"
+          crossOrigin="anonymous"
+          onError={(e) => {
+            const fallback = getFoodImageUrl(null, url, name);
+            if (e.target.src !== fallback) {
+              e.target.src = fallback;
+            }
+          }}
+        />
         
         {/* Dietary Indicator */}
         <span className={`food-diet-dot ${isVeg ? 'veg' : 'non-veg'}`}>

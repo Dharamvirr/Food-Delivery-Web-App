@@ -55,3 +55,29 @@
   box-shadow: 0 0 6px #22c55e;
   animation: radarPulse 1.8s infinite;
 }
+
+.dish-reset-view-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(225, 29, 98, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: #0f172a;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.dish-reset-view-btn:hover {
+  background: #0f172a;
+  color: #fbbf24;
+  border-color: #0f172a;
+  transform: translateY(-1px);
+}

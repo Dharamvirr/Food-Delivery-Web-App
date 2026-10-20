@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import "./DishCanvas3D.css";
 import * as THREE from "three";
+import { dishNameToImage, getFoodImageUrl } from "../../assets/assets";
 
 const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
   const mountRef = useRef(null);
+  const resetHandlerRef = useRef(null);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -18,43 +20,44 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
     camera.position.set(0, 1.6, 4.2);
     camera.lookAt(0, 0, 0);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.LinearToneMapping;
+    renderer.toneMappingExposure = 1.0;
     mount.appendChild(renderer.domElement);
 
-    // 2. High-End Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
+    // 2. Studio Lighting (balanced to match 2D photo colors)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.25);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    dirLight.position.set(3, 6, 4);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
+    dirLight.position.set(2.5, 5, 3.5);
     scene.add(dirLight);
 
-    const pointLightCherry = new THREE.PointLight(isVeg ? 0x16a34a : 0xe11d62, 3.5, 15);
-    pointLightCherry.position.set(-3, 2, 3);
-    scene.add(pointLightCherry);
+    const pointLightRim = new THREE.PointLight(isVeg ? 0x22c55e : 0xe11d62, 1.0, 12);
+    pointLightRim.position.set(-3, 2, 2);
+    scene.add(pointLightRim);
 
-    const pointLightGold = new THREE.PointLight(0xfbbf24, 2.8, 15);
-    pointLightGold.position.set(3, -2, 2);
-    scene.add(pointLightGold);
+    const pointLightWarm = new THREE.PointLight(0xfbbf24, 0.8, 12);
+    pointLightWarm.position.set(3, -2, 2);
+    scene.add(pointLightWarm);
 
     // 3. Central Dish Group
     const dishRoot = new THREE.Group();
-    dishRoot.rotation.x = 0.55; // Tilted towards viewer
+    dishRoot.rotation.x = 0.55; // Tilted slightly forward towards viewer
     scene.add(dishRoot);
 
     // Ceramic Porcelain Plate Base
     const plateGeo = new THREE.CylinderGeometry(1.45, 1.25, 0.12, 64);
     const plateMat = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
-      roughness: 0.1,
+      roughness: 0.12,
       metalness: 0.05,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.08,
-      reflectivity: 0.95,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.1,
+      reflectivity: 0.9,
     });
     const plateMesh = new THREE.Mesh(plateGeo, plateMat);
     plateMesh.position.y = -0.06;
@@ -63,21 +66,46 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
     // Outer Plate Rim
     const rimGeo = new THREE.TorusGeometry(1.42, 0.05, 16, 64);
     const rimMat = new THREE.MeshStandardMaterial({
-      color: 0xf1f5f9,
+      color: 0xf8fafc,
       roughness: 0.2,
-      metalness: 0.1,
+      metalness: 0.08,
     });
     const rimMesh = new THREE.Mesh(rimGeo, rimMat);
     rimMesh.rotation.x = Math.PI / 2;
     dishRoot.add(rimMesh);
 
-    // Inner Dish Image Texture
+    // Inner Dish Image Texture with Aspect Ratio & Color Space Preservation
     const loader = new THREE.TextureLoader();
-    let foodMesh = null;
+    loader.setCrossOrigin("anonymous");
 
-    if (imageSrc) {
-      loader.load(imageSrc, (texture) => {
-        texture.generateMipmaps = true;
+    let foodMesh = null;
+    const fallbackSrc = (dishName && dishNameToImage[dishName]) || getFoodImageUrl(null, "", dishName);
+    const activeImageSrc = imageSrc || fallbackSrc;
+
+    const setupFoodTexture = (texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.generateMipmaps = true;
+      texture.minFilter = THREE.LinearMipmapLinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+
+      // Crop square center without horizontal/vertical stretching
+      if (texture.image && texture.image.width && texture.image.height) {
+        const aspect = texture.image.width / texture.image.height;
+        if (aspect > 1) {
+          texture.repeat.set(1 / aspect, 1);
+          texture.offset.set((1 - 1 / aspect) / 2, 0);
+        } else if (aspect < 1) {
+          texture.repeat.set(1, aspect);
+          texture.offset.set(0, (1 - aspect) / 2);
+        }
+      }
+
+      if (foodMesh) {
+        foodMesh.material.map = texture;
+        foodMesh.material.needsUpdate = true;
+      } else {
         const foodGeo = new THREE.CircleGeometry(1.36, 64);
         const foodMat = new THREE.MeshBasicMaterial({
           map: texture,
@@ -87,11 +115,25 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
         foodMesh.rotation.x = -Math.PI / 2;
         foodMesh.position.y = 0.008;
         dishRoot.add(foodMesh);
-      });
+      }
+    };
+
+    if (activeImageSrc) {
+      loader.load(
+        activeImageSrc,
+        (texture) => setupFoodTexture(texture),
+        undefined,
+        (err) => {
+          console.warn("Primary 3D texture failed, falling back to local asset:", err);
+          if (fallbackSrc && fallbackSrc !== activeImageSrc) {
+            loader.load(fallbackSrc, (fbTex) => setupFoodTexture(fbTex));
+          }
+        }
+      );
     }
 
     // 4. Floating Steam / Spice Particles
-    const particleCount = 140;
+    const particleCount = 120;
     const particlePositions = new Float32Array(particleCount * 3);
     const particleColors = new Float32Array(particleCount * 3);
     const accentColor = new THREE.Color(isVeg ? 0x22c55e : 0xe11d62);
@@ -115,10 +157,10 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
     particleGeo.setAttribute("color", new THREE.BufferAttribute(particleColors, 3));
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.045,
+      size: 0.042,
       vertexColors: true,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.7,
       blending: THREE.AdditiveBlending,
     });
     const steamPoints = new THREE.Points(particleGeo, particleMat);
@@ -126,10 +168,16 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
 
     // 5. Interactive 360° Drag Rotation Physics
     let isDragging = false;
+    let isHovered = false;
     let prevMousePos = { x: 0, y: 0 };
     let targetRotationY = 0;
     let targetRotationX = 0.55;
-    let autoSpin = 0.006;
+    let autoSpin = 0.002;
+
+    resetHandlerRef.current = () => {
+      targetRotationY = 0;
+      targetRotationX = 0.55;
+    };
 
     const onMouseDown = (e) => {
       isDragging = true;
@@ -144,7 +192,7 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
       targetRotationY += deltaX * 0.01;
       targetRotationX += deltaY * 0.008;
 
-      // Bound pitch angle so plate doesn't flip completely upside down
+      // Bound pitch angle
       targetRotationX = Math.max(0.15, Math.min(1.2, targetRotationX));
 
       prevMousePos = { x: e.clientX, y: e.clientY };
@@ -154,7 +202,6 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
       isDragging = false;
     };
 
-    // Touch support
     const onTouchStart = (e) => {
       if (e.touches.length === 1) {
         isDragging = true;
@@ -178,6 +225,15 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
       isDragging = false;
     };
 
+    const onMouseEnter = () => {
+      isHovered = true;
+    };
+
+    const onMouseLeave = () => {
+      isHovered = false;
+      isDragging = false;
+    };
+
     const domEl = renderer.domElement;
     domEl.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
@@ -187,15 +243,17 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
     window.addEventListener("touchmove", onTouchMove, { passive: true });
     window.addEventListener("touchend", onTouchEnd);
 
+    domEl.addEventListener("mouseenter", onMouseEnter);
+    domEl.addEventListener("mouseleave", onMouseLeave);
+
     // 6. Animation Render Loop
     let animationFrameId;
-    let clock = new THREE.Clock();
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
 
-      if (!isDragging) {
+      // Gracefully auto-spin only when user is not actively inspecting/hovering
+      if (!isDragging && !isHovered) {
         targetRotationY += autoSpin;
       }
 
@@ -205,7 +263,7 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
       // Gentle floating steam animation
       const posArr = particleGeo.attributes.position.array;
       for (let i = 0; i < particleCount; i++) {
-        posArr[i * 3 + 1] += 0.004;
+        posArr[i * 3 + 1] += 0.0035;
         if (posArr[i * 3 + 1] > 1.2) {
           posArr[i * 3 + 1] = 0.08;
         }
@@ -217,7 +275,6 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
 
     animate();
 
-    // Resize
     const handleResize = () => {
       if (!mount) return;
       const w = mount.clientWidth;
@@ -237,6 +294,8 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
       domEl.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
+      domEl.removeEventListener("mouseenter", onMouseEnter);
+      domEl.removeEventListener("mouseleave", onMouseLeave);
 
       plateGeo.dispose();
       plateMat.dispose();
@@ -244,15 +303,27 @@ const DishCanvas3D = ({ imageSrc, dishName, isVeg }) => {
       rimMat.dispose();
       particleGeo.dispose();
       particleMat.dispose();
+      if (foodMesh) {
+        if (foodMesh.geometry) foodMesh.geometry.dispose();
+        if (foodMesh.material) foodMesh.material.dispose();
+      }
       renderer.dispose();
       if (domEl.parentNode) {
         domEl.parentNode.removeChild(domEl);
       }
     };
-  }, [imageSrc, isVeg]);
+  }, [imageSrc, dishName, isVeg]);
 
   return (
     <div className="dish-canvas-3d-wrap">
+      <button 
+        type="button" 
+        className="dish-reset-view-btn"
+        onClick={() => resetHandlerRef.current && resetHandlerRef.current()}
+        title="Reset 3D view to front"
+      >
+        ↺ Center View
+      </button>
       <div ref={mountRef} className="dish-three-container" />
       <div className="dish-3d-hint-badge">
         <span className="hint-radar-dot"></span>

@@ -205,7 +205,7 @@ const AIChatBot = () => {
                     {msg.recommendations && msg.recommendations.length > 0 && (
                       <div className="ai-dishes-carousel">
                         {msg.recommendations.map((dish) => {
-                          const imageSrc = getFoodImageUrl(dish.image, url);
+                          const imageSrc = getFoodImageUrl(dish.image, url, dish.name);
 
                           return (
                             <div key={dish._id} className="ai-dish-card">
@@ -216,7 +216,15 @@ const AIChatBot = () => {
                                   navigate(`/food/${dish._id}`);
                                 }}
                               >
-                                <img src={imageSrc} alt={dish.name} />
+                                <img 
+                                  src={imageSrc} 
+                                  alt={dish.name} 
+                                  crossOrigin="anonymous"
+                                  onError={(e) => {
+                                    const fallback = getFoodImageUrl(null, url, dish.name);
+                                    if (e.target.src !== fallback) e.target.src = fallback;
+                                  }}
+                                />
                                 <span className="ai-dish-cat">{dish.category}</span>
                               </div>
                               <div className="ai-dish-info">

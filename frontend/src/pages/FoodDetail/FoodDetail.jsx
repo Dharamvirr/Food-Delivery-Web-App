@@ -33,7 +33,12 @@ const FoodDetail = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [id]);
 
-  const foodItem = food_list.find((item) => String(item._id) === String(id));
+  const foodItem = food_list.find((item) => 
+    String(item._id) === String(id) || 
+    (item.numericId && String(item.numericId) === String(id)) ||
+    (item._id && String(id).length === 24 && item._id.toLowerCase() === String(id).toLowerCase()) ||
+    item.name.toLowerCase().replace(/[^a-z0-9]/g, '-') === String(id).toLowerCase()
+  );
 
   // Fetch real reviews from MongoDB Atlas
   const fetchDishReviews = async () => {
@@ -114,7 +119,7 @@ const FoodDetail = () => {
     );
   }
 
-  const imageSrc = getFoodImageUrl(foodItem.image, url);
+  const imageSrc = getFoodImageUrl(foodItem.image, url, foodItem.name);
 
   const isVeg = foodItem.category === 'Pure Veg' || foodItem.name.toLowerCase().includes('veg');
   const originalPrice = Math.round(foodItem.price * 1.25); // Show realistic discount
@@ -218,7 +223,19 @@ const FoodDetail = () => {
             <DishCanvas3D imageSrc={imageSrc} dishName={foodItem.name} isVeg={isVeg} />
           ) : (
             <div className="detail-img-container">
-              <img src={imageSrc} alt={foodItem.name} className="detail-main-img" />
+              <img 
+                src={imageSrc} 
+                alt={foodItem.name} 
+                className="detail-main-img" 
+                loading="eager"
+                crossOrigin="anonymous"
+                onError={(e) => {
+                  const fallback = getFoodImageUrl(null, url, foodItem.name);
+                  if (e.target.src !== fallback) {
+                    e.target.src = fallback;
+                  }
+                }}
+              />
               <span className={`detail-diet-badge ${isVeg ? 'veg' : 'non-veg'}`}>
                 <span className="diet-icon"></span>
                 {isVeg ? 'Pure Veg' : 'Non-Veg'}

@@ -81,7 +81,11 @@ const StoreContextProvider = (props) => {
         let totalAmount = 0;
         for (const item in cartItems) {
             if (cartItems[item] > 0) {
-                let itemInfo = food_list.find((product) => String(product._id) === String(item) || product.name === item);
+                let itemInfo = food_list.find((product) => 
+                    String(product._id) === String(item) || 
+                    String(product.numericId) === String(item) ||
+                    product.name === item
+                );
                 if (itemInfo) {
                     totalAmount += itemInfo.price * cartItems[item];
                 }
@@ -98,7 +102,17 @@ const StoreContextProvider = (props) => {
                 if (page === 1) {
                     setFoodList(prev => {
                         const backendMap = new Map(response.data.data.map(i => [i.name, i]));
-                        return prev.map(item => backendMap.get(item.name) || item);
+                        return prev.map(item => {
+                            const bItem = backendMap.get(item.name);
+                            if (!bItem) return item;
+                            return {
+                                ...item,
+                                ...bItem,
+                                // Retain fast bundled asset so images never break or lag
+                                image: item.image || bItem.image,
+                                numericId: item.numericId
+                            };
+                        });
                     });
                 } else {
                     setFoodList(prev => {

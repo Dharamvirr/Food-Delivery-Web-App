@@ -169,6 +169,7 @@ const FoodCanvas3D = () => {
 
     // 6. Real 3D Ceramic Food Plates Orbiting the Planet
     const loader = new THREE.TextureLoader();
+    loader.setCrossOrigin("anonymous");
     const foodDishesList = [
       { img: foodImagesMap["food_28.png"], radius: 2.35, speed: 0.85, tilt: 0.25 },
       { img: foodImagesMap["food_25.png"], radius: 2.55, speed: 0.7, tilt: -0.35 },
@@ -181,6 +182,8 @@ const FoodCanvas3D = () => {
 
     foodDishesList.forEach((dish, idx) => {
       loader.load(dish.img, (texture) => {
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.generateMipmaps = true;
         const dishGroup = new THREE.Group();
 
         // 1. Ceramic plate base

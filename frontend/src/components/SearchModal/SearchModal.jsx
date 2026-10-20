@@ -111,7 +111,7 @@ const SearchModal = ({ isOpen, onClose }) => {
               </div>
             ) : (
               filteredDishes.map((item, index) => {
-                const imageSrc = getFoodImageUrl(item.image, url);
+                const imageSrc = getFoodImageUrl(item.image, url, item.name);
 
                 const isVeg = item.category === 'Pure Veg' || item.name.toLowerCase().includes('veg');
 
@@ -125,7 +125,15 @@ const SearchModal = ({ isOpen, onClose }) => {
                   >
                     <div className="search-card-left" onClick={() => handleDishClick(item._id)}>
                       <div className="search-card-img-wrapper">
-                        <img src={imageSrc} alt={item.name} />
+                        <img 
+                          src={imageSrc} 
+                          alt={item.name} 
+                          crossOrigin="anonymous"
+                          onError={(e) => {
+                            const fallback = getFoodImageUrl(null, url, item.name);
+                            if (e.target.src !== fallback) e.target.src = fallback;
+                          }}
+                        />
                         <span className={`diet-dot ${isVeg ? 'veg' : 'non-veg'}`}></span>
                       </div>
                       <div className="search-card-info">
