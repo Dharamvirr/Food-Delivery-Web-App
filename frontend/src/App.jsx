@@ -14,6 +14,7 @@ import FoodDetail from "./pages/FoodDetail/FoodDetail.jsx";
 import FloatingCart from "./components/FloatingCart/FloatingCart.jsx";
 import AIChatBot from "./components/AIChatBot/AIChatBot.jsx";
 import PageLoader from "./components/PageLoader/PageLoader.jsx";
+import RecruiterTour from "./components/RecruiterTour/RecruiterTour.jsx";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -38,6 +39,7 @@ const App = () => {
       </div>
       <FloatingCart />
       <AIChatBot />
+      <RecruiterTour />
       <Footer />
     </>
   );

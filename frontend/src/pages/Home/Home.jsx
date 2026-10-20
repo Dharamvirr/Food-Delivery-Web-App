@@ -1,19 +1,22 @@
-import React, { useState } from 'react'
-import './Home.css'
-import Header from '../../components/Header/Header'
-import ExploreMenu from '../../components/ExploreMenu/ExploreMenu'
-import FoodDisplay from '../../components/FoodDisplay/FoodDisplay'
-import AppDownload from '../../components/AppDownload/AppDownload'
+import React, { useState } from 'react';
+import './Home.css';
+import Header from '../../components/Header/Header';
+import BentoShowcase from '../../components/BentoShowcase/BentoShowcase';
+import ExploreMenu from '../../components/ExploreMenu/ExploreMenu';
+import FoodDisplay from '../../components/FoodDisplay/FoodDisplay';
+import AppDownload from '../../components/AppDownload/AppDownload';
+
 const Home = () => {
-const [category, setCategory] =useState('All');
+  const [category, setCategory] = useState('All');
   return (
     <div> 
-        <Header/>
-        <ExploreMenu category={category} setCategory={setCategory}></ExploreMenu> 
-        <FoodDisplay category={category}></FoodDisplay> 
-        <AppDownload />       
+      <Header />
+      <BentoShowcase />
+      <ExploreMenu category={category} setCategory={setCategory} /> 
+      <FoodDisplay category={category} /> 
+      <AppDownload />       
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

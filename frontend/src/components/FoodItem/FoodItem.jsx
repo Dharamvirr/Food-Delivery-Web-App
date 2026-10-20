@@ -9,6 +9,9 @@ const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart, url, favorites, toggleFavorite } = useContext(StoreContext);
   const navigate = useNavigate();
 
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
   const isFavorite = favorites && favorites.includes(String(id));
 
   const imageSrc = getFoodImageUrl(image, url);
@@ -24,6 +27,19 @@ const FoodItem = ({ id, name, price, description, image }) => {
     navigate(`/food/${id}`);
   };
 
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    setRotateX(-y * 0.035);
+    setRotateY(x * 0.035);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
   const handleLike = (e) => {
     e.stopPropagation();
     toggleFavorite(id);
@@ -33,8 +49,14 @@ const FoodItem = ({ id, name, price, description, image }) => {
     <motion.div 
       className='food-item' 
       onClick={handleCardClick} 
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       title="Click to view details"
-      whileHover={{ y: -6, transition: { duration: 0.2 } }}
+      style={{
+        transformStyle: 'preserve-3d',
+        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+      }}
+      whileHover={{ y: -6, transition: { duration: 0.15 } }}
     >
       <div className='food-item-img-container'>
         <img className='food-item-image' src={imageSrc} alt={name} />
