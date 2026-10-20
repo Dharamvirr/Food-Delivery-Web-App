@@ -11,6 +11,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
 
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
 
   const isFavorite = favorites && favorites.includes(String(id));
 
@@ -29,15 +30,23 @@ const FoodItem = ({ id, name, price, description, image }) => {
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    setRotateX(-y * 0.035);
-    setRotateY(x * 0.035);
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const xOffset = x - rect.width / 2;
+    const yOffset = y - rect.height / 2;
+    setRotateX(-yOffset * 0.055);
+    setRotateY(xOffset * 0.055);
+    setGlare({
+      x: (x / rect.width) * 100,
+      y: (y / rect.height) * 100,
+      opacity: 0.35
+    });
   };
 
   const handleMouseLeave = () => {
     setRotateX(0);
     setRotateY(0);
+    setGlare({ x: 50, y: 50, opacity: 0 });
   };
 
   const handleLike = (e) => {
@@ -56,8 +65,16 @@ const FoodItem = ({ id, name, price, description, image }) => {
         transformStyle: 'preserve-3d',
         transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
       }}
-      whileHover={{ y: -6, transition: { duration: 0.15 } }}
+      whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.15 } }}
     >
+      {/* 3D Holographic Dynamic Glare Sweep */}
+      <div 
+        className="food-3d-glare"
+        style={{
+          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity}) 0%, rgba(255,255,255,0) 65%)`,
+          opacity: glare.opacity > 0 ? 1 : 0
+        }}
+      ></div>
       <div className='food-item-img-container'>
         <img className='food-item-image' src={imageSrc} alt={name} />
         

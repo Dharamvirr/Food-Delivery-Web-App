@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Home.css';
 import Header from '../../components/Header/Header';
-import BentoShowcase from '../../components/BentoShowcase/BentoShowcase';
 import ExploreMenu from '../../components/ExploreMenu/ExploreMenu';
 import FoodDisplay from '../../components/FoodDisplay/FoodDisplay';
 import AppDownload from '../../components/AppDownload/AppDownload';
@@ -11,7 +10,6 @@ const Home = () => {
   return (
     <div> 
       <Header />
-      <BentoShowcase />
       <ExploreMenu category={category} setCategory={setCategory} /> 
       <FoodDisplay category={category} /> 
       <AppDownload />       

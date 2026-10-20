@@ -103,7 +103,7 @@ const Header = () => {
           <div className="hero-status-pill">
             <span className="status-radar-dot"></span>
             <span className="status-text">
-              <b>480+ Hot Kitchens Online</b> • Real-time WebSockets
+              <b>480+ Hot Kitchens Online</b> • Fresh & Fast in 20 Mins
             </span>
           </div>
 
@@ -133,10 +133,9 @@ const Header = () => {
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.96 }}
               onClick={() => {
-                const bento = document.getElementById("bento-showcase");
-                if (bento) bento.scrollIntoView({ behavior: "smooth" });
-                else scrollToExplore();
+                window.dispatchEvent(new CustomEvent("open-architecture-modal"));
               }}
+              title="View full-stack system architecture and specs"
             >
               <span>⚡ See System Architecture</span>
             </motion.button>

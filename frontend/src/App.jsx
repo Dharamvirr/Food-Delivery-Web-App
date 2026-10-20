@@ -12,9 +12,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FoodDetail from "./pages/FoodDetail/FoodDetail.jsx";
 import FloatingCart from "./components/FloatingCart/FloatingCart.jsx";
-import AIChatBot from "./components/AIChatBot/AIChatBot.jsx";
+import FloatingActions from "./components/FloatingActions/FloatingActions.jsx";
 import PageLoader from "./components/PageLoader/PageLoader.jsx";
-import RecruiterTour from "./components/RecruiterTour/RecruiterTour.jsx";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -38,8 +37,7 @@ const App = () => {
         </Routes>
       </div>
       <FloatingCart />
-      <AIChatBot />
-      <RecruiterTour />
+      <FloatingActions />
       <Footer />
     </>
   );

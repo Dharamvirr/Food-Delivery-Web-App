@@ -1,0 +1,824 @@
+/* ===================================================
+   UNIFIED DRAGGABLE FLOATING DOCK (Recruiter + Chef AI)
+   =================================================== */
+
+.floating-actions-dock {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 995;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Vertical Drag Handle */
+.dock-drag-handle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1.5px solid rgba(225, 29, 98, 0.35);
+  backdrop-filter: blur(12px);
+  padding: 8px 6px;
+  border-radius: 14px;
+  cursor: grab;
+  color: #94a3b8;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.dock-drag-handle:active {
+  cursor: grabbing;
+  background: #0f172a;
+  border-color: #e11d62;
+  color: #fbbf24;
+  box-shadow: 0 10px 28px rgba(225, 29, 98, 0.4);
+}
+
+.dock-grip {
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.dock-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* Vertical Stack for Actions - NEVER OVERLAPS */
+.dock-items-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* 1. Recruiter Tour Pill */
+.dock-recruiter-pill {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1.5px solid rgba(225, 29, 98, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 9px 18px;
+  border-radius: 50px;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 18px rgba(225, 29, 98, 0.3);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.dock-recruiter-pill:hover {
+  background: #0f172a;
+  border-color: #e11d62;
+  box-shadow: 0 14px 40px rgba(225, 29, 98, 0.45), 0 0 24px rgba(245, 158, 11, 0.35);
+}
+
+.dock-radar-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: radarPulse 1.8s infinite;
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.dock-pill-icon {
+  font-size: 15px;
+}
+
+.dock-pill-text {
+  font-size: 13px;
+  color: #f1f5f9;
+  letter-spacing: 0.2px;
+}
+
+.dock-pill-text b {
+  color: #fbbf24;
+}
+
+/* 2. Chef AI Mascot Button */
+.dock-chef-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.chef-speech-bubble {
+  background: #ffffff;
+  color: #0f172a;
+  padding: 7px 15px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(225, 29, 98, 0.15), 0 0 12px rgba(245, 158, 11, 0.2);
+  border: 1.5px solid rgba(225, 29, 98, 0.3);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+.chef-avatar-circle {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e11d62 0%, #f43f5e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 28px rgba(225, 29, 98, 0.45), 0 0 16px rgba(245, 158, 11, 0.35);
+  border: 2px solid #ffffff;
+}
+
+.chef-emoji {
+  font-size: 26px;
+}
+
+.chef-online-dot {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #16a34a;
+  border: 2px solid #ffffff;
+}
+
+/* ===================================================
+   RECRUITER & ARCHITECTURE MODAL
+   =================================================== */
+
+.recruiter-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.recruiter-modal-card {
+  width: 100%;
+  max-width: 660px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 35px rgba(225, 29, 98, 0.2);
+  border: 1.5px solid rgba(225, 29, 98, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-avatar {
+  font-size: 28px;
+  background: #fff0f3;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(225, 29, 98, 0.2);
+}
+
+.modal-title-row h4 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.candidate-name {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #e11d62;
+  font-weight: 700;
+}
+
+.close-btn {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* Modal Tabs Header */
+.modal-tabs-header {
+  display: flex;
+  padding: 6px 20px 0;
+  background: #fafafa;
+  border-bottom: 1.5px solid #f1f5f9;
+  gap: 8px;
+}
+
+.modal-tab-btn {
+  padding: 10px 18px;
+  border: none;
+  background: transparent;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+}
+
+.modal-tab-btn:hover {
+  color: #0f172a;
+}
+
+.modal-tab-btn.active {
+  color: #e11d62;
+  border-bottom-color: #e11d62;
+  background: #ffffff;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Tab Pane Content */
+.tab-pane-content {
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.modal-pitch {
+  font-size: 14px;
+  color: #475569;
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.tour-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tour-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.tour-option-btn:hover {
+  border-color: #e11d62;
+  background: #fff8f9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(225, 29, 98, 0.12);
+}
+
+.tour-option-btn.primary {
+  background: linear-gradient(135deg, #fff0f3 0%, #fff7ed 100%);
+  border-color: rgba(225, 29, 98, 0.4);
+}
+
+.opt-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.opt-title {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.opt-sub {
+  margin: 3px 0 0;
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+/* Architecture Pane */
+.arch-flow-box {
+  background: #0f172a;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.arch-node-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.arch-node {
+  flex: 1;
+  min-width: 140px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.arch-node b {
+  font-size: 13px;
+  color: #fbbf24;
+}
+
+.arch-node .node-detail {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.3;
+}
+
+.arch-arrow {
+  font-size: 11px;
+  color: #e11d62;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.arch-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.arch-spec-card {
+  background: #fafafa;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.spec-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  color: #e11d62;
+  background: #fff0f3;
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.arch-spec-card h5 {
+  margin: 0 0 6px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.arch-spec-card p {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+/* Modal Footer */
+.modal-footer {
+  padding: 14px 24px;
+  background: #fafafa;
+  border-top: 1px solid #f1f5f9;
+}
+
+.links-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #64748b;
+  flex-wrap: wrap;
+}
+
+.links-row a {
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+
+.links-row a:hover {
+  color: #e11d62;
+}
+
+/* ===================================================
+   CHEF TOMATO AI CHATBOT WINDOW (DOCKED)
+   =================================================== */
+
+.ai-chat-window-docked {
+  position: fixed;
+  bottom: 95px;
+  right: 24px;
+  width: 380px;
+  max-width: calc(100vw - 36px);
+  height: 520px;
+  max-height: calc(100vh - 120px);
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28), 0 0 30px rgba(225, 29, 98, 0.2);
+  border: 1.5px solid rgba(225, 29, 98, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.ai-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+}
+
+.ai-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-chef-avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e11d62;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.live-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 2px solid #0f172a;
+}
+
+.ai-header-left h4 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.ai-header-left p {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.ai-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.ai-close-btn:hover {
+  color: #ffffff;
+}
+
+.ai-quick-prompts-bar {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ai-quick-prompts-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.ai-prompt-pill {
+  flex-shrink: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 5px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ai-prompt-pill:hover {
+  border-color: #e11d62;
+  color: #e11d62;
+  background: #fff8f9;
+}
+
+.ai-chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-message-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.ai-message-row.user {
+  flex-direction: row-reverse;
+}
+
+.ai-msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff0f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  border: 1px solid rgba(225, 29, 98, 0.2);
+}
+
+.ai-message-bubble {
+  max-width: 82%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ai-message-row.bot .ai-message-bubble {
+  background: #f8fafc;
+  color: #0f172a;
+  border-top-left-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.ai-message-row.user .ai-message-bubble {
+  background: #e11d62;
+  color: #ffffff;
+  border-top-right-radius: 4px;
+}
+
+.ai-msg-text {
+  margin: 0;
+}
+
+.ai-dishes-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ai-dish-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px;
+  transition: all 0.2s;
+}
+
+.ai-dish-card:hover {
+  border-color: #e11d62;
+  box-shadow: 0 4px 12px rgba(225, 29, 98, 0.1);
+}
+
+.ai-dish-img-box {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.ai-dish-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ai-dish-cat {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 8px;
+  text-align: center;
+  padding: 1px 0;
+}
+
+.ai-dish-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ai-dish-info h5 {
+  margin: 0 0 3px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.ai-dish-price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  margin-bottom: 5px;
+}
+
+.ai-price {
+  font-weight: 800;
+  color: #e11d62;
+}
+
+.ai-rating {
+  color: #64748b;
+}
+
+.ai-add-cart-btn {
+  background: #e11d62;
+  color: #ffffff;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ai-add-cart-btn:hover {
+  background: #be123c;
+}
+
+.typing-bubble {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94a3b8;
+  animation: typingBounce 1.2s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1.1); opacity: 1; }
+}
+
+.ai-chat-footer {
+  display: flex;
+  padding: 10px 14px;
+  border-top: 1px solid #f1f5f9;
+  background: #ffffff;
+  gap: 8px;
+}
+
+.ai-chat-footer input {
+  flex: 1;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 9px 14px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ai-chat-footer input:focus {
+  border-color: #e11d62;
+}
+
+.ai-chat-footer button {
+  background: #e11d62;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.ai-chat-footer button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .dock-pill-text {
+    display: none;
+  }
+  .dock-recruiter-pill {
+    padding: 10px 12px;
+  }
+  .chef-speech-bubble {
+    display: none;
+  }
+  .arch-specs-grid {
+    grid-template-columns: 1fr;
+  }
+  .ai-chat-window-docked {
+    right: 12px;
+    bottom: 85px;
+    height: 480px;
+  }
+}

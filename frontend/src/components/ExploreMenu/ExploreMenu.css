@@ -68,12 +68,13 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
+  perspective: 600px;
 }
 
 .explore-menu-list-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.06);
 }
 
 .all-category-circle {
@@ -85,15 +86,16 @@
   align-items: center;
   justify-content: center;
   font-size: 30px;
-  border: 2px solid rgba(225, 29, 98, 0.15);
-  transition: all 0.25s;
-  box-shadow: 0 4px 15px rgba(225, 29, 98, 0.08);
+  border: 2px solid rgba(225, 29, 98, 0.18);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 22px rgba(225, 29, 98, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9), inset 0 -3px 6px rgba(0, 0, 0, 0.08);
 }
 
 .explore-menu-list-item.all-active .all-category-circle {
   border-color: #e11d62;
   background: #fff0f3;
-  box-shadow: 0 0 22px rgba(225, 29, 98, 0.35), 0 0 12px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 26px rgba(225, 29, 98, 0.45), 0 0 14px rgba(245, 158, 11, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  transform: scale(1.08) rotate(3deg);
 }
 
 .explore-menu-list-item img {
@@ -101,15 +103,19 @@
   height: 78px;
   object-fit: cover;
   border-radius: 50%;
-  transition: all 0.25s;
-  border: 2.5px solid rgba(225, 29, 98, 0.15);
-  box-shadow: 0 4px 15px rgba(225, 29, 98, 0.08);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2.5px solid rgba(225, 29, 98, 0.18);
+  box-shadow: 0 8px 22px rgba(225, 29, 98, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.7), inset 0 -3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.explore-menu-list-item:hover img {
+  box-shadow: 0 14px 28px rgba(225, 29, 98, 0.25), 0 0 16px rgba(245, 158, 11, 0.25);
 }
 
 .explore-menu-list-item .active {
   border-color: #e11d62;
-  box-shadow: 0 0 22px rgba(225, 29, 98, 0.4), 0 0 14px rgba(245, 158, 11, 0.3);
-  transform: scale(1.06);
+  box-shadow: 0 0 28px rgba(225, 29, 98, 0.5), 0 0 16px rgba(245, 158, 11, 0.35);
+  transform: scale(1.1) rotate(-3deg);
 }
 
 .explore-menu-list-item p {
@@ -117,17 +123,19 @@
   color: #475569;
   font-size: 14px;
   font-weight: 600;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 
 .explore-menu-list-item:hover p {
   color: #e11d62;
+  transform: translateY(-2px);
 }
 
 .explore-menu-list-item .active + p,
 .explore-menu-list-item.all-active p {
   color: #e11d62;
   font-weight: 800;
+  transform: translateY(-2px);
 }
 
 .explore-menu hr {
