@@ -357,7 +357,7 @@ const FloatingActions = () => {
                   <span className="modal-avatar">👨‍💻</span>
                   <div>
                     <h4>Candidate Evaluation Fast-Track</h4>
-                    <p className="candidate-name">Dharamvir Singh • MNNIT Allahabad (CSE)</p>
+                    <p className="candidate-name">Dharamvir Singh • MNNIT Allahabad (ECE)</p>
                   </div>
                 </div>
                 <button className="close-btn" onClick={() => setIsTourOpen(false)} aria-label="Close modal">

@@ -14,12 +14,14 @@ import FoodDetail from "./pages/FoodDetail/FoodDetail.jsx";
 import FloatingCart from "./components/FloatingCart/FloatingCart.jsx";
 import FloatingActions from "./components/FloatingActions/FloatingActions.jsx";
 import PageLoader from "./components/PageLoader/PageLoader.jsx";
+import GlitterParticles from "./components/GlitterParticles/GlitterParticles.jsx";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
+      <GlitterParticles />
       <div className="diwali-fairy-lights-streamer" />
       <PageLoader />
       <ToastContainer />

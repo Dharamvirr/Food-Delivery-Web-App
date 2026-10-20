@@ -142,7 +142,7 @@ const RecruiterTour = () => {
                   <span className="modal-avatar">👨‍💻</span>
                   <div>
                     <h4>Candidate Evaluation Fast-Track</h4>
-                    <p className="candidate-name">Dharamvir Singh • MNNIT Allahabad</p>
+                    <p className="candidate-name">Dharamvir Singh • MNNIT Allahabad (ECE)</p>
                   </div>
                 </div>
                 <button className="close-btn" onClick={() => setIsOpen(false)}>✕</button>

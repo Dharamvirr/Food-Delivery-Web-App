@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Header.css";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { assets } from "../../assets/assets";
+import { assets, foodImagesMap } from "../../assets/assets";
 import FoodCanvas3D from "../FoodCanvas3D/FoodCanvas3D";
 
 const HERO_DISHES = [
@@ -12,7 +12,7 @@ const HERO_DISHES = [
     price: "₹280",
     rating: "4.9",
     time: "20 Mins",
-    image: assets.food_25,
+    image: foodImagesMap["food_25.png"],
     accent: "#e11d62",
     badge: "🔥 Chef's Best Pick"
   },
@@ -23,7 +23,7 @@ const HERO_DISHES = [
     price: "₹220",
     rating: "4.8",
     time: "15 Mins",
-    image: assets.food_1,
+    image: foodImagesMap["food_1.png"],
     accent: "#16a34a",
     badge: "🌱 100% Farm Fresh"
   },
@@ -34,7 +34,7 @@ const HERO_DISHES = [
     price: "₹240",
     rating: "4.9",
     time: "18 Mins",
-    image: assets.food_13,
+    image: foodImagesMap["food_13.png"],
     accent: "#f59e0b",
     badge: "⭐ Top Rated Snack"
   }

@@ -51,30 +51,21 @@ const FoodItem = ({ id, name, price, description, image }) => {
 
   const handleLike = (e) => {
     e.stopPropagation();
+    e.preventDefault();
     toggleFavorite(id);
   };
 
   return (
-    <motion.div 
+    <div 
       className='food-item' 
       onClick={handleCardClick} 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       title="Click to view details"
       style={{
-        transformStyle: 'preserve-3d',
-        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+        transform: `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
       }}
-      whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.15 } }}
     >
-      {/* 3D Holographic Dynamic Glare Sweep */}
-      <div 
-        className="food-3d-glare"
-        style={{
-          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity}) 0%, rgba(255,255,255,0) 65%)`,
-          opacity: glare.opacity > 0 ? 1 : 0
-        }}
-      ></div>
       <div className='food-item-img-container'>
         <img className='food-item-image' src={imageSrc} alt={name} />
         
@@ -84,50 +75,64 @@ const FoodItem = ({ id, name, price, description, image }) => {
         </span>
 
         {/* Wishlist Heart Icon */}
-        <motion.button 
+        <button 
           className={`food-heart-btn ${isFavorite ? 'liked' : ''}`}
           onClick={handleLike}
-          whileTap={{ scale: 0.75 }}
+          type="button"
           title={isFavorite ? "Remove from favorites" : "Save to favorites"}
+          aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
         >
           {isFavorite ? "❤️" : "🤍"}
-        </motion.button>
+        </button>
 
-        {/* Counter / Add controls */}
+        {/* High-Contrast Non-Disappearing Add to Cart & Counter */}
         {!cartItems[id] ? (
-          <motion.img
-            className='add'
-            whileTap={{ scale: 0.85 }}
-            whileHover={{ scale: 1.1 }}
+          <button
+            className='food-add-btn'
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
               addToCart(id);
             }}
-            src={assets.add_icon_white}
-            alt="Add to cart"
             title="Add to cart"
-          />
+            aria-label="Add to cart"
+          >
+            <span className="add-btn-plus">+</span>
+          </button>
         ) : (
-          <div className="food-item-counter" onClick={(e) => e.stopPropagation()}>
-            <motion.img
-              whileTap={{ scale: 0.85 }}
-              src={assets.remove_icon_red}
+          <div 
+            className="food-item-counter" 
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          >
+            <button
+              className="counter-action-btn minus"
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 removeFromCart(id);
               }}
-              alt="Remove"
-            />
-            <p>{cartItems[id]}</p>
-            <motion.img
-              whileTap={{ scale: 0.85 }}
-              src={assets.add_icon_green}
+              aria-label="Remove one"
+            >
+              −
+            </button>
+            <p className="counter-qty">{cartItems[id]}</p>
+            <button
+              className="counter-action-btn plus"
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 addToCart(id);
               }}
-              alt="Add"
-            />
+              aria-label="Add one"
+            >
+              +
+            </button>
           </div>
         )}
       </div>
@@ -143,7 +148,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
           <span className="view-details-hint">View details →</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

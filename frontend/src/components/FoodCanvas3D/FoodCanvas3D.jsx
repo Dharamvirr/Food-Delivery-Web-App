@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./FoodCanvas3D.css";
 import * as THREE from "three";
-import { assets } from "../../assets/assets";
+import { foodImagesMap } from "../../assets/assets";
 
 const FoodCanvas3D = () => {
   const mountRef = useRef(null);
@@ -167,24 +167,63 @@ const FoodCanvas3D = () => {
       return { mesh, ...data };
     });
 
-    // 6. Food Image Billboards Orbiting on the 3D Sphere Equator
+    // 6. Real 3D Ceramic Food Plates Orbiting the Planet
     const loader = new THREE.TextureLoader();
-    const dishThumbs = [assets.food_25, assets.food_1, assets.food_13, assets.food_2];
-    const dishSprites = [];
+    const foodDishesList = [
+      { img: foodImagesMap["food_28.png"], radius: 2.35, speed: 0.85, tilt: 0.25 },
+      { img: foodImagesMap["food_25.png"], radius: 2.55, speed: 0.7, tilt: -0.35 },
+      { img: foodImagesMap["food_1.png"], radius: 2.4, speed: 1.05, tilt: 0.4 },
+      { img: foodImagesMap["food_13.png"], radius: 2.6, speed: 0.75, tilt: -0.2 },
+      { img: foodImagesMap["food_7.png"], radius: 2.3, speed: 0.95, tilt: 0.3 },
+      { img: foodImagesMap["food_18.png"], radius: 2.45, speed: 0.65, tilt: -0.45 },
+    ];
+    const orbitingDishObjects = [];
 
-    dishThumbs.forEach((imgSrc, idx) => {
-      loader.load(imgSrc, (texture) => {
-        const spriteMat = new THREE.SpriteMaterial({
-          map: texture,
-          transparent: true,
+    foodDishesList.forEach((dish, idx) => {
+      loader.load(dish.img, (texture) => {
+        const dishGroup = new THREE.Group();
+
+        // 1. Ceramic plate base
+        const plateGeo = new THREE.CylinderGeometry(0.38, 0.34, 0.04, 32);
+        const plateMat = new THREE.MeshStandardMaterial({
+          color: 0xffffff,
+          roughness: 0.15,
+          metalness: 0.1,
         });
-        const sprite = new THREE.Sprite(spriteMat);
-        sprite.scale.set(0.65, 0.65, 1);
-        const angle = (idx / dishThumbs.length) * Math.PI * 2;
-        const dist = 1.65;
-        sprite.position.set(Math.cos(angle) * dist, 0, Math.sin(angle) * dist);
-        rootGroup.add(sprite);
-        dishSprites.push({ sprite, angle, dist });
+        const plateMesh = new THREE.Mesh(plateGeo, plateMat);
+        plateMesh.rotation.x = Math.PI / 2;
+        dishGroup.add(plateMesh);
+
+        // 2. High-res circular food picture
+        const foodGeo = new THREE.CircleGeometry(0.35, 32);
+        const foodMat = new THREE.MeshBasicMaterial({
+          map: texture,
+          side: THREE.DoubleSide,
+        });
+        const foodMesh = new THREE.Mesh(foodGeo, foodMat);
+        foodMesh.position.z = 0.025;
+        dishGroup.add(foodMesh);
+
+        // 3. Glowing rim ring
+        const rimGeo = new THREE.RingGeometry(0.35, 0.38, 32);
+        const rimMat = new THREE.MeshBasicMaterial({
+          color: 0xe11d62,
+          side: THREE.DoubleSide,
+        });
+        const rimMesh = new THREE.Mesh(rimGeo, rimMat);
+        rimMesh.position.z = 0.026;
+        dishGroup.add(rimMesh);
+
+        dishGroup.scale.set(1.15, 1.15, 1.15);
+        scene.add(dishGroup);
+
+        orbitingDishObjects.push({
+          group: dishGroup,
+          radius: dish.radius,
+          speed: dish.speed,
+          tilt: dish.tilt,
+          initialOffset: (idx / foodDishesList.length) * Math.PI * 2,
+        });
       });
     });
 
@@ -280,6 +319,16 @@ const FoodCanvas3D = () => {
         orb.mesh.position.set(x, y, z);
       });
 
+      // Update orbiting real 3D food plates
+      orbitingDishObjects.forEach((item) => {
+        const angle = elapsed * item.speed + item.initialOffset;
+        const x = Math.cos(angle) * item.radius;
+        const z = Math.sin(angle) * item.radius;
+        const y = Math.sin(angle * 2 + item.tilt) * 0.42;
+        item.group.position.set(x, y, z);
+        item.group.lookAt(camera.position); // Face camera for appetizing clarity
+      });
+
       // Point light dynamic motion
       pointLightCherry.position.x = Math.sin(elapsed * 1.2) * 4;
       pointLightCherry.position.z = Math.cos(elapsed * 1.2) * 4;
@@ -316,7 +365,9 @@ const FoodCanvas3D = () => {
       auraGeo.dispose();
       auraMat.dispose();
       ringGeometry.dispose();
-      ringMaterial.dispose();
+      orbitingDishObjects.forEach((item) => {
+        scene.remove(item.group);
+      });
       renderer.dispose();
       if (domEl.parentNode) {
         domEl.parentNode.removeChild(domEl);
