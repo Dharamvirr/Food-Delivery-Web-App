@@ -1,0 +1,52 @@
+.cart-canvas-3d-wrap {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: radial-gradient(circle at center, #ffffff 0%, #fff1f4 60%, #ffe4e9 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 12px rgba(225, 29, 98, 0.08), 0 8px 24px rgba(225, 29, 98, 0.1);
+  border: 1.5px solid rgba(225, 29, 98, 0.18);
+  margin-bottom: 20px;
+}
+
+.cart-canvas-3d-wrap.compact {
+  height: 220px;
+}
+
+.cart-three-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.cart-three-container:active {
+  cursor: grabbing;
+}
+
+.cart-3d-hint-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(225, 29, 98, 0.35);
+  backdrop-filter: blur(8px);
+  padding: 5px 12px;
+  border-radius: 20px;
+  color: #ffffff;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  pointer-events: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.cart-3d-hint-badge b {
+  color: #fbbf24;
+}

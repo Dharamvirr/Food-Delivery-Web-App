@@ -6,6 +6,7 @@ import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import confetti from 'canvas-confetti';
+import TrackingCanvas3D from '../../components/TrackingCanvas3D/TrackingCanvas3D';
 
 const MyOrders = () => {
   const [data, setData] = useState([]);
@@ -100,6 +101,18 @@ const MyOrders = () => {
         >
           {loading ? "Updating..." : "🔄 Refresh"}
         </button>
+      </div>
+
+      {/* 3D Interactive GPS Route Dispatch Radar */}
+      <div className="orders-3d-radar-banner">
+        <TrackingCanvas3D />
+        <div className="radar-banner-info">
+          <span className="radar-live-badge">🟢 Real-Time GPS Mesh</span>
+          <h3>Live Courier Orbit & Route Radar</h3>
+          <p>
+            Kitchen dispatches stream directly via Socket.IO WSS channels. Click and drag the 3D globe to inspect delivery satellites and active routes in 360°.
+          </p>
+        </div>
       </div>
 
       {!token ? (

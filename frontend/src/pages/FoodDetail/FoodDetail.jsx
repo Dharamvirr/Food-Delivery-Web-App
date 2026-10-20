@@ -7,12 +7,14 @@ import FoodItem from '../../components/FoodItem/FoodItem';
 import { getFoodImageUrl } from '../../assets/assets';
 import axios from 'axios';
 import confetti from 'canvas-confetti';
+import DishCanvas3D from '../../components/DishCanvas3D/DishCanvas3D';
 
 const FoodDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { food_list, cartItems, addToCart, removeFromCart, url, token } = useContext(StoreContext);
   const [selectedQty, setSelectedQty] = useState(1);
+  const [viewMode, setViewMode] = useState('3d'); // '3d' | 'photo'
 
   // Dynamic MongoDB Reviews State
   const [reviews, setReviews] = useState([]);
@@ -193,16 +195,37 @@ const FoodDetail = () => {
 
       {/* Main Product Showcase Card */}
       <div className="detail-hero-card">
-        {/* Left: Product Image & Badges */}
+        {/* Left: 3D Interactive Dish Canvas & Mode Switcher */}
         <div className="detail-image-section">
-          <div className="detail-img-container">
-            <img src={imageSrc} alt={foodItem.name} className="detail-main-img" />
-            <span className={`detail-diet-badge ${isVeg ? 'veg' : 'non-veg'}`}>
-              <span className="diet-icon"></span>
-              {isVeg ? 'Pure Veg' : 'Non-Veg'}
-            </span>
-            <span className="detail-discount-tag">20% OFF</span>
+          <div className="detail-view-mode-bar">
+            <button
+              type="button"
+              className={`view-mode-pill ${viewMode === '3d' ? 'active' : ''}`}
+              onClick={() => setViewMode('3d')}
+            >
+              🪐 3D Interactive (Drag 360°)
+            </button>
+            <button
+              type="button"
+              className={`view-mode-pill ${viewMode === 'photo' ? 'active' : ''}`}
+              onClick={() => setViewMode('photo')}
+            >
+              📷 2D Photo
+            </button>
           </div>
+
+          {viewMode === '3d' ? (
+            <DishCanvas3D imageSrc={imageSrc} dishName={foodItem.name} isVeg={isVeg} />
+          ) : (
+            <div className="detail-img-container">
+              <img src={imageSrc} alt={foodItem.name} className="detail-main-img" />
+              <span className={`detail-diet-badge ${isVeg ? 'veg' : 'non-veg'}`}>
+                <span className="diet-icon"></span>
+                {isVeg ? 'Pure Veg' : 'Non-Veg'}
+              </span>
+              <span className="detail-discount-tag">20% OFF</span>
+            </div>
+          )}
         </div>
 
         {/* Right: Product Details & Purchase Actions */}

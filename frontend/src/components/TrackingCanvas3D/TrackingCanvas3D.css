@@ -1,0 +1,57 @@
+.tracking-canvas-3d-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  height: 220px;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(34, 197, 94, 0.25);
+  border: 1.5px solid rgba(34, 197, 94, 0.35);
+}
+
+.tracking-three-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.tracking-three-container:active {
+  cursor: grabbing;
+}
+
+.tracking-3d-hint-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 16px;
+  color: #ffffff;
+  font-size: 10.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+
+.tracking-3d-hint-badge b {
+  color: #4ade80;
+}
+
+.tracking-radar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+  animation: radarPulse 1.5s infinite;
+}

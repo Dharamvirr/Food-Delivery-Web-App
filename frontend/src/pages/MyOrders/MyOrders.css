@@ -72,6 +72,60 @@
   color: #ffffff;
 }
 
+/* 3D GPS Radar Banner */
+.orders-3d-radar-banner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 24px;
+  padding: 22px 28px;
+  margin-bottom: 30px;
+  border: 1.5px solid rgba(34, 197, 94, 0.35);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(34, 197, 94, 0.15);
+  color: #ffffff;
+}
+
+.radar-banner-info {
+  flex: 1;
+}
+
+.radar-live-badge {
+  display: inline-block;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #4ade80;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.radar-banner-info h3 {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.radar-banner-info p {
+  margin: 0;
+  font-size: 13.5px;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .orders-3d-radar-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px 16px;
+  }
+}
+
 /* Empty State */
 .orders-empty-card {
   text-align: center;
