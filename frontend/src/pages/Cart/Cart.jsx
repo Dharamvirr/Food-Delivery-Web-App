@@ -4,7 +4,6 @@ import { StoreContext } from '../../context/StoreContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import confetti from 'canvas-confetti';
-import CartCanvas3D from '../../components/CartCanvas3D/CartCanvas3D';
 
 const Cart = () => {
   const {
@@ -59,8 +58,8 @@ const Cart = () => {
     <div className="cart-page">
       {cartProductList.length === 0 ? (
         <div className="cart-empty-state">
-          <div style={{ maxWidth: "340px", margin: "0 auto 16px" }}>
-            <CartCanvas3D />
+          <div className="empty-cart-icon-box">
+            <span>🛒</span>
           </div>
           <h2>Your Cart is Feeling Hungry!</h2>
           <p>You haven't added any mouth-watering dishes yet. Explore our diverse menu to satisfy your cravings.</p>
@@ -159,7 +158,6 @@ const Cart = () => {
             {/* Right: Bill Summary & Checkout */}
             <div className="cart-summary-column">
               <div className="cart-summary-card">
-                <CartCanvas3D size="compact" />
                 <h3>Order Summary</h3>
 
                 {/* Promo Code Box */}
