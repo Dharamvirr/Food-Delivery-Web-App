@@ -370,3 +370,29 @@
     left: 0;
   }
 }
+
+@media (max-width: 640px) {
+  .app-download-3d-card {
+    padding: 30px 14px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .mockup-3d-phone {
+    width: 220px;
+    height: 360px;
+    transform: none !important;
+  }
+  .badge-top-right {
+    right: -5px;
+    top: 20px;
+    padding: 5px 10px;
+  }
+  .badge-bottom-left {
+    left: -5px;
+    bottom: 20px;
+    padding: 5px 10px;
+  }
+  .app-download-spatial-wrap {
+    margin: 40px auto 20px;
+  }
+}

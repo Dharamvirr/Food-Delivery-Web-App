@@ -804,20 +804,38 @@
 }
 
 @media (max-width: 640px) {
+  .floating-actions-dock {
+    bottom: 84px;
+    right: 12px;
+    gap: 6px;
+  }
   .dock-pill-text {
     display: none;
   }
   .dock-recruiter-pill {
-    padding: 10px 12px;
+    padding: 8px 12px;
+  }
+  .dock-drag-handle {
+    padding: 6px 4px;
   }
   .chef-speech-bubble {
     display: none;
+  }
+  .chef-avatar-circle {
+    width: 44px;
+    height: 44px;
+  }
+  .chef-emoji {
+    font-size: 20px;
   }
   .arch-specs-grid {
     grid-template-columns: 1fr;
   }
   .ai-chat-window-docked {
-    right: 12px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+    max-width: calc(100vw - 20px);
     bottom: 85px;
     height: 480px;
   }

@@ -489,11 +489,14 @@
 
 @media (max-width: 576px) {
   .cart-item-modern-card {
-    flex-direction: column;
-    align-items: stretch;
+    padding: 12px;
+    gap: 12px;
   }
   .cart-item-img-box {
-    width: 100%;
-    height: 140px;
+    width: 76px;
+    height: 76px;
+  }
+  .cart-summary-card {
+    padding: 20px 16px;
   }
 }

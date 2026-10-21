@@ -75,7 +75,7 @@
 /* Responsive */
 @media (max-width: 640px) {
   .food-canvas-3d-wrapper {
-    height: 340px;
-    max-width: 340px;
+    height: 300px;
+    max-width: 300px;
   }
 }

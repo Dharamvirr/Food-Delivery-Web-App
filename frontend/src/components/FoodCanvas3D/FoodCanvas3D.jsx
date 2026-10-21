@@ -16,9 +16,10 @@ const FoodCanvas3D = () => {
     const height = mount.clientHeight || 420;
 
     // 1. Scene, Camera, Renderer
+    const isMobile = window.innerWidth <= 640;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 5.2);
+    camera.position.set(0, 0, isMobile ? 6.5 : 5.2);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -346,7 +347,9 @@ const FoodCanvas3D = () => {
       if (!mount) return;
       const w = mount.clientWidth;
       const h = mount.clientHeight;
+      const isMobileNow = window.innerWidth <= 640;
       camera.aspect = w / h;
+      camera.position.z = isMobileNow ? 6.5 : 5.2;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };

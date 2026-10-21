@@ -520,35 +520,106 @@
 
 @media (max-width: 640px) {
   .spatial-hero {
-    padding: 30px 18px 40px;
-    border-radius: 24px;
-    margin: 12px auto 30px;
+    padding: 24px 14px 32px;
+    border-radius: 20px;
+    margin: 10px auto 24px;
+    overflow: hidden;
+    max-width: 100%;
   }
   .hero-headline {
-    font-size: 30px;
+    font-size: 28px;
+    letter-spacing: -0.6px;
   }
   .hero-subtext {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .hero-actions-row {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .hero-cta-primary,
+  .hero-cta-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 18px;
     font-size: 13.5px;
   }
-  .spatial-dish-img {
-    width: 220px;
-    height: 220px;
+  .hero-metrics-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 4px;
+    padding: 10px 6px;
+    text-align: center;
   }
-  .orbit-glass-pill {
-    padding: 7px 12px;
+  .metric-cell {
+    align-items: center;
   }
-  .orbit-icon {
-    font-size: 16px;
+  .metric-val {
+    font-size: 11.5px;
   }
-  .orbit-title {
-    font-size: 11px;
-  }
-  .orbit-sub {
+  .metric-lbl {
     font-size: 9px;
   }
-  .hero-metrics-strip {
+  .metric-divider {
+    display: none;
+  }
+  .spatial-stage-rotator {
+    max-width: 100%;
+    height: 310px;
+    transform: none !important;
+  }
+  .spatial-dish-img {
+    width: 200px;
+    height: 200px;
+  }
+  .orbit-glass-pill {
+    padding: 6px 10px;
+    gap: 6px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+  }
+  .pill-top-left {
+    top: 6px;
+    left: 6px;
+    transform: none !important;
+  }
+  .pill-top-right {
+    top: 36px;
+    right: 6px;
+    left: auto;
+    transform: none !important;
+  }
+  .pill-bottom-left {
+    display: none !important;
+  }
+  .orbit-icon {
+    font-size: 14px;
+  }
+  .orbit-title {
+    font-size: 10px;
+  }
+  .orbit-sub {
+    font-size: 8.5px;
+  }
+  .dish-switcher-dock {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .switcher-chips-row {
     flex-wrap: wrap;
-    gap: 14px;
-    padding: 10px 16px;
+    justify-content: center;
+    gap: 6px;
+    padding: 4px 8px;
+    max-width: 100%;
+  }
+  .switcher-chip {
+    padding: 4px 10px;
+    gap: 5px;
+  }
+  .chip-title {
+    font-size: 11px;
   }
 }
