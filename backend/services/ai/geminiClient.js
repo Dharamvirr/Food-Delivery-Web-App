@@ -16,19 +16,24 @@ import { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } from "@langchain
 
 const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
-if (!apiKey) {
-  console.warn("⚠️ Warning: GEMINI_API_KEY is missing from environment variables.");
+export const isGeminiConfigured = Boolean(apiKey);
+
+if (!isGeminiConfigured) {
+  console.warn("⚠️ Warning: GEMINI_API_KEY is not set. AI Concierge is running in standby mode until configured.");
 }
 
-// Gemini Chat Model (using gemini-3.5-flash-lite for blazing fast speed, high free-tier quota & tool-calling)
+// Fallback key prevents constructor error at import/boot time if key is not yet set in deployment
+const effectiveKey = apiKey || "STANDBY_KEY_NOT_CONFIGURED";
+
+// Gemini Chat Model (using gemini-2.5-flash for speed, quota & tool-calling)
 export const geminiChatModel = new ChatGoogleGenerativeAI({
-  model: "gemini-3.5-flash-lite",
-  apiKey: apiKey,
+  model: "gemini-2.5-flash",
+  apiKey: effectiveKey,
   temperature: 0.7,
 });
 
 // Gemini Embeddings Model (768 dimensions)
 export const geminiEmbeddings = new GoogleGenerativeAIEmbeddings({
   model: "gemini-embedding-001",
-  apiKey: apiKey,
+  apiKey: effectiveKey,
 });

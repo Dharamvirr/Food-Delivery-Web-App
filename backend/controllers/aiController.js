@@ -2,6 +2,7 @@ import { HumanMessage } from "@langchain/core/messages";
 import { Command } from "@langchain/langgraph";
 import { foodAgentApp } from "../services/ai/foodAgent.js";
 import { ingestMenuToQdrant } from "../services/ai/ingestMenu.js";
+import { isGeminiConfigured } from "../services/ai/geminiClient.js";
 
 /**
  * Helper to safely extract string text from any LangChain message content (string or array)
@@ -53,6 +54,18 @@ export const chatWithChef = async (req, res) => {
 
     if (!message || typeof message !== "string") {
       return res.status(400).json({ success: false, message: "A valid message is required." });
+    }
+
+    // Graceful fallback if GEMINI_API_KEY is not configured yet on deployment
+    if (!isGeminiConfigured) {
+      return res.json({
+        success: true,
+        text: "👨‍🍳 Namaste! The AI Culinary Assistant is currently in standby mode. Please configure GEMINI_API_KEY in Render environment variables to activate full live AI recommendations! In the meantime, you can explore our complete menu directly on the homepage.",
+        requiresApproval: false,
+        threadId,
+        userName: null,
+        dishes: [],
+      });
     }
 
     const config = { configurable: { thread_id: threadId } };
@@ -120,18 +133,24 @@ export const chatWithChef = async (req, res) => {
  */
 export const resumeApproval = async (req, res) => {
   try {
-    const { threadId, approved, notes = "" } = req.body;
+    const { threadId, approved } = req.body;
 
     if (!threadId) {
-      return res.status(400).json({ success: false, message: "threadId is required to resume." });
+      return res.status(400).json({ success: false, message: "threadId is required." });
+    }
+
+    if (!isGeminiConfigured) {
+      return res.status(400).json({ success: false, message: "AI assistant is not configured." });
     }
 
     const config = { configurable: { thread_id: threadId } };
 
-    // Resume the interrupted graph with the human decision
+    // Resume execution past interrupt with approval payload
     const result = await foodAgentApp.invoke(
       new Command({
-        resume: { approved: Boolean(approved), notes },
+        resume: {
+          approved: Boolean(approved),
+        },
       }),
       config
     );
@@ -161,6 +180,9 @@ export const resumeApproval = async (req, res) => {
  */
 export const seedQdrant = async (req, res) => {
   try {
+    if (!isGeminiConfigured) {
+      return res.status(400).json({ success: false, message: "GEMINI_API_KEY is required to generate dish embeddings." });
+    }
     const result = await ingestMenuToQdrant();
     return res.json({ success: true, message: "Qdrant Vector DB seeded successfully", result });
   } catch (error) {
