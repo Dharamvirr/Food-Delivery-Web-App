@@ -1,246 +1,118 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Header.css";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { assets, foodImagesMap } from "../../assets/assets";
-import FoodCanvas3D from "../FoodCanvas3D/FoodCanvas3D";
-
-const HERO_DISHES = [
-  {
-    id: "dish-1",
-    name: "Truffle Cheese Pasta",
-    tagline: "Slow-cooked Italian Herbs & Parmigiano",
-    price: "₹280",
-    rating: "4.9",
-    time: "20 Mins",
-    image: foodImagesMap["food_25.png"],
-    accent: "#e11d62",
-    badge: "🔥 Chef's Best Pick"
-  },
-  {
-    id: "dish-2",
-    name: "Mediterranean Salad Bowl",
-    tagline: "Organic Greens, Olive Oil & Greek Feta",
-    price: "₹220",
-    rating: "4.8",
-    time: "15 Mins",
-    image: foodImagesMap["food_1.png"],
-    accent: "#16a34a",
-    badge: "🌱 100% Farm Fresh"
-  },
-  {
-    id: "dish-3",
-    name: "Artisan Sourdough Sandwich",
-    tagline: "Aged Cheddar, Smoked Garlic & Crispy Crust",
-    price: "₹240",
-    rating: "4.9",
-    time: "18 Mins",
-    image: foodImagesMap["food_13.png"],
-    accent: "#f59e0b",
-    badge: "⭐ Top Rated Snack"
-  }
-];
+import { toast } from "react-toastify";
 
 const Header = () => {
-  const [activeDishIndex, setActiveDishIndex] = useState(0);
-  const activeDish = HERO_DISHES[activeDishIndex];
-
-  // Mouse tilt tracking with smooth spring physics
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["14deg", "-14deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-16deg", "16deg"]);
-  const badgeParallaxX = useTransform(mouseXSpring, [-0.5, 0.5], [-18, 18]);
-  const badgeParallaxY = useTransform(mouseYSpring, [-0.5, 0.5], [-18, 18]);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   const scrollToExplore = () => {
     const el = document.getElementById("explore-menu");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleCopyCoupon = () => {
+    navigator.clipboard?.writeText("TOMATO50");
+    toast.success("🎉 Promo code TOMATO50 copied to clipboard!");
   };
 
   return (
-    <div 
-      className="spatial-hero"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Ambient Radial Background Glows */}
-      <div className="ambient-glow glow-cherry"></div>
-      <div className="ambient-glow glow-gold"></div>
-
-      {/* Grid Mesh Texture Overlay */}
-      <div className="hero-grid-mesh"></div>
-
-      <div className="spatial-hero-container">
-        {/* Left Column: Visionary Typography & CTAs */}
-        <motion.div 
-          className="hero-text-col"
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          {/* Live System Pulse Pill */}
-          <div className="hero-status-pill">
-            <span className="status-radar-dot"></span>
-            <span className="status-text">
-              <b>480+ Hot Kitchens Online</b> • Fresh & Fast in 20 Mins
-            </span>
+    <section className="hero-section">
+      <div className="hero-container">
+        {/* Left Column: Clear, Appetizing Value Proposition */}
+        <div className="hero-left">
+          <div className="hero-live-badge">
+            <span className="live-dot-pulse"></span>
+            <span><b>480+ Kitchens Online</b> • Express 20-Min Delivery</span>
           </div>
 
-          <h1 className="hero-headline">
-            Crave it. Tap it. <br />
-            <span className="gradient-shimmer-text">Savor in 20 Mins.</span>
+          <h1 className="hero-title">
+            Order Your Favourite <br />
+            <span className="hero-title-accent">Food Delivered Hot</span>
           </h1>
 
-          <p className="hero-subtext">
-            Experience the next era of food delivery. Real-time visual tracking, 
-            zero-friction 1-click checkout, and curated chef-crafted dishes delivered piping hot to your doorstep.
+          <p className="hero-desc">
+            Choose from a diverse menu of chef-crafted delicacies made with farm-fresh ingredients. 
+            Enjoy lightning-fast doorstep delivery, real-time live tracking, and unbeatable flavors.
           </p>
 
-          <div className="hero-actions-row">
-            <motion.button 
-              className="hero-cta-primary"
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.96 }}
+          <div className="hero-actions">
+            <button 
+              className="hero-primary-btn"
               onClick={scrollToExplore}
+              aria-label="Explore restaurant menu"
             >
-              <span>Explore 3D Menu</span>
-              <span className="btn-glow-arrow">➔</span>
-            </motion.button>
+              <span>Explore Menu</span>
+              <span className="btn-arrow">➔</span>
+            </button>
 
-            <motion.button 
-              className="hero-cta-secondary"
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent("open-architecture-modal"));
-              }}
-              title="View full-stack system architecture and specs"
+            <button 
+              className="hero-coupon-btn"
+              onClick={handleCopyCoupon}
+              title="Click to copy promo code"
+              type="button"
             >
-              <span>⚡ See System Architecture</span>
-            </motion.button>
+              <span className="coupon-icon">🏷️</span>
+              <span>Use Code: <b>TOMATO50</b> for ₹50 OFF</span>
+            </button>
           </div>
 
-          {/* Social Proof Stats Pill */}
-          <div className="hero-metrics-strip">
-            <div className="metric-cell">
-              <span className="metric-val">⚡ 22 Mins</span>
-              <span className="metric-lbl">Avg. Delivery</span>
+          {/* Social Proof Strip */}
+          <div className="hero-trust-bar">
+            <div className="trust-cell">
+              <span className="trust-icon">⚡</span>
+              <div>
+                <p className="trust-val">20-25 Mins</p>
+                <p className="trust-lbl">Avg. Delivery</p>
+              </div>
             </div>
-            <div className="metric-divider"></div>
-            <div className="metric-cell">
-              <span className="metric-val">⭐ 4.9 / 5.0</span>
-              <span className="metric-lbl">2,400+ Diners</span>
+            <div className="trust-divider"></div>
+            <div className="trust-cell">
+              <span className="trust-icon">⭐</span>
+              <div>
+                <p className="trust-val">4.9 / 5.0</p>
+                <p className="trust-lbl">2,400+ Diners</p>
+              </div>
             </div>
-            <div className="metric-divider"></div>
-            <div className="metric-cell">
-              <span className="metric-val">🔒 100% Safe</span>
-              <span className="metric-lbl">Stripe & COD</span>
+            <div className="trust-divider"></div>
+            <div className="trust-cell">
+              <span className="trust-icon">🌿</span>
+              <div>
+                <p className="trust-val">100% Fresh</p>
+                <p className="trust-lbl">Farm to Table</p>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Right Column: 3D Spatial Canvas & Floating Parallax Elements */}
-        <div className="hero-spatial-stage">
-          <motion.div 
-            className="spatial-stage-rotator"
-            style={{
-              rotateX,
-              rotateY,
-              transformStyle: "preserve-3d"
-            }}
-          >
-            {/* 3D Radial Dish Shadow */}
-            <div className="spatial-dish-shadow"></div>
-
-            {/* Orbiting Spatial Liquid Glass Badge 1: Live Status */}
-            <motion.div 
-              className="orbit-glass-pill pill-top-left"
-              style={{ x: badgeParallaxX, y: badgeParallaxY }}
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <span className="orbit-icon">🛵</span>
+        {/* Right Column: Bright, Vibrant Food Presentation */}
+        <div className="hero-right">
+          <div className="hero-image-frame">
+            <img 
+              src="/header_img.png" 
+              alt="Mouth-watering Gourmet Dishes" 
+              className="hero-food-img"
+              loading="eager"
+            />
+            
+            <div className="hero-floating-pill pill-top">
+              <span className="pill-emoji">🔥</span>
               <div>
-                <p className="orbit-title">Live Tracking</p>
-                <p className="orbit-sub">WebSocket Stream</p>
+                <p className="pill-title">Chef's Specials</p>
+                <p className="pill-sub">Piping Hot & Fresh</p>
               </div>
-            </motion.div>
-
-            {/* Orbiting Spatial Liquid Glass Badge 2: Offer */}
-            <motion.div 
-              className="orbit-glass-pill pill-top-right"
-              style={{ x: badgeParallaxX, y: badgeParallaxY }}
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-            >
-              <span className="orbit-icon">🏷️</span>
-              <div>
-                <p className="orbit-title">FLAT ₹120 OFF</p>
-                <p className="orbit-sub">Use Code: TASTY50</p>
-              </div>
-            </motion.div>
-
-            {/* Orbiting Spatial Liquid Glass Badge 3: Rating */}
-            <motion.div 
-              className="orbit-glass-pill pill-bottom-left"
-              style={{ x: badgeParallaxX, y: badgeParallaxY }}
-              animate={{ y: [0, -7, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-            >
-              <span className="orbit-icon">⭐</span>
-              <div>
-                <p className="orbit-title">{activeDish.rating} Star Food</p>
-                <p className="orbit-sub">Verified Foodies</p>
-              </div>
-            </motion.div>
-
-            {/* Center: Real 3D WebGL Canvas (Rotating Food Planet & Particle Rings) */}
-            <div className="spatial-canvas-anchor">
-              <FoodCanvas3D />
             </div>
-          </motion.div>
 
-          {/* Interactive 3D Dish Selector Pills */}
-          <div className="dish-switcher-dock">
-            <span className="switcher-label">Select 3D Dish:</span>
-            <div className="switcher-chips-row">
-              {HERO_DISHES.map((dish, idx) => (
-                <button
-                  key={dish.id}
-                  className={`switcher-chip ${activeDishIndex === idx ? "active" : ""}`}
-                  onClick={() => setActiveDishIndex(idx)}
-                  title={`Switch to ${dish.name}`}
-                >
-                  <img src={dish.image} alt={dish.name} className="chip-mini-thumb" />
-                  <span className="chip-title">{dish.name.split(" ")[0]}</span>
-                </button>
-              ))}
+            <div className="hero-floating-pill pill-bottom">
+              <span className="pill-emoji">🛵</span>
+              <div>
+                <p className="pill-title">Free Delivery</p>
+                <p className="pill-sub">On orders above ₹400</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

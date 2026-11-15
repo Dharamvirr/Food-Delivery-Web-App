@@ -45,8 +45,8 @@
 
 .search-input-wrapper:focus-within {
   background: #ffffff;
-  border-color: #ff4c24;
-  box-shadow: 0 0 0 4px rgba(255, 76, 36, 0.15);
+  border-color: #e23744;
+  box-shadow: 0 0 0 4px rgba(226, 55, 68, 0.15);
 }
 
 .search-icon-symbol {
@@ -159,10 +159,10 @@
 }
 
 .search-chip.active {
-  background: linear-gradient(135deg, #ff4c24 0%, #ff6b4a 100%);
+  background: linear-gradient(135deg, #e23744 0%, #ea580c 100%);
   color: #ffffff;
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(255, 76, 36, 0.3);
+  box-shadow: 0 4px 12px rgba(226, 55, 68, 0.3);
 }
 
 .search-chip.veg-chip.active {
@@ -221,7 +221,7 @@
 .search-result-card:hover {
   border-color: #ffd8d0;
   background: #fffbfa;
-  box-shadow: 0 8px 24px rgba(255, 76, 36, 0.08);
+  box-shadow: 0 8px 24px rgba(226, 55, 68, 0.08);
   transform: translateY(-2px);
 }
 
@@ -321,7 +321,7 @@
 .search-card-price {
   font-size: 16px;
   font-weight: 800;
-  color: #ff4c24;
+  color: #e23744;
 }
 
 .search-card-rating {
@@ -374,14 +374,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ff4c24;
+  color: #e23744;
   transition: all 0.15s;
 }
 
 .search-qty-counter button:hover {
-  background: #ff4c24;
+  background: #e23744;
   color: white;
-  border-color: #ff4c24;
+  border-color: #e23744;
 }
 
 .search-qty-counter span {
@@ -409,3 +409,4 @@
     padding: 12px 16px;
   }
 }
+

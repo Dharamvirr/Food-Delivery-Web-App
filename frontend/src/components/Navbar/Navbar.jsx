@@ -74,99 +74,101 @@ const Navbar = ({ setShowLogin }) => {
     <>
       <SearchModal isOpen={showSearch} onClose={() => setShowSearch(false)} />
       
-      <div className='navbar'>
-        <Link to='/' onClick={() => setMenu("home")}>
-          <img src={assets.logo} alt="Tomato Logo" className="logo" />
-        </Link>
-
-        <ul className="navbar-menu">
-          <li 
-            onClick={() => handleNavClick("home", "home")} 
-            className={menu === "home" ? "active" : ""}
-          >
-            Home
-          </li>
-          <li 
-            onClick={() => handleNavClick("explore-menu", "menu")} 
-            className={menu === "menu" ? "active" : ""}
-          >
-            Menu
-          </li>
-          <li 
-            onClick={() => handleNavClick("app-download", "mobile-app")} 
-            className={menu === "mobile-app" ? "active" : ""}
-          >
-            Mobile App
-          </li>
-          <li 
-            onClick={() => handleNavClick("footer", "contact-us")} 
-            className={menu === "contact-us" ? "active" : ""}
-          >
-            Contact Us
-          </li>
-        </ul>
-
-        <div className="navbar-right">
-          <div 
-            className="navbar-search-btn"
-            onClick={() => setShowSearch(true)}
-            title="Search dishes (Click to open)"
-          >
-            <img src={assets.search_icon} alt="Search" />
-            <span className="search-hint-text">Search...</span>
-          </div>
-
-          {/* Quick Wishlist / Favorites Button */}
-          <button 
-            className="navbar-fav-btn" 
-            onClick={handleOpenFavorites}
-            title={`View Favorites (${favorites ? favorites.length : 0})`}
-          >
-            <span className="fav-heart-icon">❤️</span>
-            {favorites && favorites.length > 0 && (
-              <span className="navbar-fav-badge">{favorites.length}</span>
-            )}
-          </button>
-
-          <Link to='/cart' className="navbar-cart-pill-btn" title="View Cart">
-            <div className="cart-icon-wrapper">
-              <ShoppingBag size={20} className="navbar-cart-svg" />
-              {totalItemCount > 0 && (
-                <span className="navbar-cart-badge">{totalItemCount}</span>
-              )}
-            </div>
-            {totalItemCount > 0 && (
-              <span className="navbar-cart-total">₹{getTotalCartAmount()}</span>
-            )}
+      <header className='navbar'>
+        <div className="navbar-container">
+          <Link to='/' onClick={() => setMenu("home")}>
+            <img src={assets.logo} alt="Tomato Logo" className="logo" />
           </Link>
 
-          {!token ? (
-            <button className="navbar-signin-btn" onClick={() => setShowLogin(true)}>Sign In</button>
-          ) : (
-            <div 
-              ref={profileRef}
-              className={`navbar-profile ${isProfileOpen ? 'open' : ''}`}
-              onClick={() => setIsProfileOpen((prev) => !prev)}
-              title="Account Menu"
+          <ul className="navbar-menu">
+            <li 
+              onClick={() => handleNavClick("home", "home")} 
+              className={menu === "home" ? "active" : ""}
             >
-              <img src={assets.profile_icon} alt="Profile" />
-              <ul className='navbar-profile-dropdown' onClick={(e) => e.stopPropagation()}>
-                <li onClick={() => { setIsProfileOpen(false); handleOpenFavorites(); }}>
-                  <span style={{ fontSize: "16px", marginRight: "8px" }}>❤️</span> <p>My Wishlist ({favorites ? favorites.length : 0})</p>
-                </li>
-                <hr />
-                <li onClick={() => { setIsProfileOpen(false); navigate('/myorders'); }}>
-                  <img src={assets.bag_icon} alt="Orders" /> <p>My Orders</p>
-                </li>
-                <hr />
-                <li onClick={() => { setIsProfileOpen(false); logout(); }}>
-                  <img src={assets.logout_icon} alt="Logout" /> <p>Logout</p>
-                </li>
-              </ul>
+              Home
+            </li>
+            <li 
+              onClick={() => handleNavClick("explore-menu", "menu")} 
+              className={menu === "menu" ? "active" : ""}
+            >
+              Menu
+            </li>
+            <li 
+              onClick={() => handleNavClick("app-download", "mobile-app")} 
+              className={menu === "mobile-app" ? "active" : ""}
+            >
+              Mobile App
+            </li>
+            <li 
+              onClick={() => handleNavClick("footer", "contact-us")} 
+              className={menu === "contact-us" ? "active" : ""}
+            >
+              Contact Us
+            </li>
+          </ul>
+
+          <div className="navbar-right">
+            <div 
+              className="navbar-search-btn"
+              onClick={() => setShowSearch(true)}
+              title="Search dishes (Click to open)"
+            >
+              <img src={assets.search_icon} alt="Search" />
+              <span className="search-hint-text">Search...</span>
             </div>
-          )}
+
+            {/* Quick Wishlist / Favorites Button */}
+            <button 
+              className="navbar-fav-btn" 
+              onClick={handleOpenFavorites}
+              title={`View Favorites (${favorites ? favorites.length : 0})`}
+            >
+              <span className="fav-heart-icon">❤️</span>
+              {favorites && favorites.length > 0 && (
+                <span className="navbar-fav-badge">{favorites.length}</span>
+              )}
+            </button>
+
+            <Link to='/cart' className="navbar-cart-pill-btn" title="View Cart">
+              <div className="cart-icon-wrapper">
+                <ShoppingBag size={20} className="navbar-cart-svg" />
+                {totalItemCount > 0 && (
+                  <span className="navbar-cart-badge">{totalItemCount}</span>
+                )}
+              </div>
+              {totalItemCount > 0 && (
+                <span className="navbar-cart-total">₹{getTotalCartAmount()}</span>
+              )}
+            </Link>
+
+            {!token ? (
+              <button className="navbar-signin-btn" onClick={() => setShowLogin(true)}>Sign In</button>
+            ) : (
+              <div 
+                ref={profileRef}
+                className={`navbar-profile ${isProfileOpen ? 'open' : ''}`}
+                onClick={() => setIsProfileOpen((prev) => !prev)}
+                title="Account Menu"
+              >
+                <img src={assets.profile_icon} alt="Profile" />
+                <ul className='navbar-profile-dropdown' onClick={(e) => e.stopPropagation()}>
+                  <li onClick={() => { setIsProfileOpen(false); handleOpenFavorites(); }}>
+                    <span style={{ fontSize: "16px", marginRight: "8px" }}>❤️</span> <p>My Wishlist ({favorites ? favorites.length : 0})</p>
+                  </li>
+                  <hr />
+                  <li onClick={() => { setIsProfileOpen(false); navigate('/myorders'); }}>
+                    <img src={assets.bag_icon} alt="Orders" /> <p>My Orders</p>
+                  </li>
+                  <hr />
+                  <li onClick={() => { setIsProfileOpen(false); logout(); }}>
+                    <img src={assets.logout_icon} alt="Logout" /> <p>Logout</p>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </header>
     </>
   );
 };

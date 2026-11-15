@@ -222,10 +222,43 @@ export const dishNameToImage = {
     "Veg Noodles": food_30,
     "Somen Noodles": food_31,
     "Cooked Noodles": food_32,
+    "Paneer Butter Masala": food_25,
+    "Margherita Basil Pizza": food_5,
+    "Hyderabadi Dum Biryani": food_23,
+    "Crispy Peri Peri Fries": food_6,
+    "Chocolate Lava Brownie": food_19,
+    "Stuffed Garlic Breadsticks": food_15,
+    "Crispy Farmhouse Burger": food_13,
+    "Royal Mango Kulfi": food_10,
     // Featured Hero aliases
     "Truffle Cheese Pasta": food_25,
     "Mediterranean Salad Bowl": food_1,
     "Artisan Sourdough Sandwich": food_13
+};
+
+export const isVegetarianDish = (item) => {
+    if (!item) return false;
+    const name = (item.name || '').toLowerCase();
+    const cat = (item.category || '').toLowerCase();
+    const desc = (item.description || '').toLowerCase();
+
+    // Explicit Non-veg markers
+    if (
+        name.includes('chicken') ||
+        desc.includes('chicken') ||
+        name.includes('meat') ||
+        desc.includes('meat') ||
+        name.includes('fish') ||
+        name.includes('prawn') ||
+        name.includes('pork') ||
+        name.includes('beef') ||
+        (name.includes('lasagna') && !name.includes('veg'))
+    ) {
+        return false;
+    }
+
+    // Default to vegetarian for all other salads, pastas, pure veg, desserts, cakes, noodles
+    return true;
 };
 
 export const getFoodImageUrl = (image, backendUrl = "", dishName = "") => {
@@ -588,5 +621,77 @@ export const food_list = [
         price: 180,
         description: "Classic street-style stir-fried noodles tossed in dark soy sauce, chili crisp, and tender bok choy.",
         category: "Noodles"
+    },
+    {
+        _id: "6acee8893d7357da7272fefb",
+        numericId: "33",
+        name: "Paneer Butter Masala",
+        image: food_25,
+        price: 260,
+        description: "Rich, creamy tomato cashew gravy with melt-in-the-mouth cottage cheese cubes and fresh cream.",
+        category: "Pure Veg"
+    },
+    {
+        _id: "6acee8893d7357da7272fefc",
+        numericId: "34",
+        name: "Margherita Basil Pizza",
+        image: food_5,
+        price: 290,
+        description: "Crispy thin crust topped with San Marzano tomato sauce, fresh mozzarella, and sweet Italian basil.",
+        category: "Pasta"
+    },
+    {
+        _id: "6acee8893d7357da7272fefd",
+        numericId: "35",
+        name: "Hyderabadi Dum Biryani",
+        image: food_23,
+        price: 240,
+        description: "Aromatic basmati rice slow-cooked in handi with fragrant saffron, caramelised onions, and fresh garden vegetables.",
+        category: "Pure Veg"
+    },
+    {
+        _id: "6acee8893d7357da7272fefe",
+        numericId: "36",
+        name: "Crispy Peri Peri Fries",
+        image: food_6,
+        price: 140,
+        description: "Golden crinkle-cut french fries tossed in zesty African bird's eye chili seasoning.",
+        category: "Rolls"
+    },
+    {
+        _id: "6acee8893d7357da7272feff",
+        numericId: "37",
+        name: "Chocolate Lava Brownie",
+        image: food_19,
+        price: 180,
+        description: "Warm fudgy dark chocolate cake with a molten Belgian chocolate center.",
+        category: "Desserts"
+    },
+    {
+        _id: "6acee8893d7357da7272ff00",
+        numericId: "38",
+        name: "Stuffed Garlic Breadsticks",
+        image: food_15,
+        price: 160,
+        description: "Oven-baked crusty artisan breadsticks filled with molten mozzarella, sweet corn, and garlic butter.",
+        category: "Sandwich"
+    },
+    {
+        _id: "6acee8893d7357da7272ff01",
+        numericId: "39",
+        name: "Crispy Farmhouse Burger",
+        image: food_13,
+        price: 190,
+        description: "Crispy spiced vegetable patty topped with melted cheddar, crunchy lettuce, and house herb mayo.",
+        category: "Sandwich"
+    },
+    {
+        _id: "6acee8893d7357da7272ff02",
+        numericId: "40",
+        name: "Royal Mango Kulfi",
+        image: food_10,
+        price: 150,
+        description: "Traditional slow-reduced milk kulfi infused with real Alphonso mango pulp and crushed pistachios.",
+        category: "Desserts"
     }
 ]

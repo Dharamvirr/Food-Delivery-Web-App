@@ -14,7 +14,7 @@ const FoodDetail = () => {
   const navigate = useNavigate();
   const { food_list, cartItems, addToCart, removeFromCart, url, token } = useContext(StoreContext);
   const [selectedQty, setSelectedQty] = useState(1);
-  const [viewMode, setViewMode] = useState('3d'); // '3d' | 'photo'
+  const [viewMode, setViewMode] = useState('photo'); // 'photo' | '3d'
 
   // Dynamic MongoDB Reviews State
   const [reviews, setReviews] = useState([]);
@@ -205,17 +205,17 @@ const FoodDetail = () => {
           <div className="detail-view-mode-bar">
             <button
               type="button"
-              className={`view-mode-pill ${viewMode === '3d' ? 'active' : ''}`}
-              onClick={() => setViewMode('3d')}
-            >
-              🪐 3D Interactive (Drag 360°)
-            </button>
-            <button
-              type="button"
               className={`view-mode-pill ${viewMode === 'photo' ? 'active' : ''}`}
               onClick={() => setViewMode('photo')}
             >
-              📷 2D Photo
+              📷 Photo View
+            </button>
+            <button
+              type="button"
+              className={`view-mode-pill ${viewMode === '3d' ? 'active' : ''}`}
+              onClick={() => setViewMode('3d')}
+            >
+              🪐 3D View (360°)
             </button>
           </div>
 

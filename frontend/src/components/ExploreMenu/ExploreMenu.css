@@ -23,40 +23,38 @@
 .explore-menu-text {
   max-width: 60%;
   color: #64748b;
-  font-size: 14.5px;
+  font-size: 15px;
   margin: 0;
   line-height: 1.6;
 }
 
 .clear-filter-btn {
-  background: #fff0f3;
-  border: 1.5px solid #e11d62;
-  color: #e11d62;
-  padding: 7px 16px;
-  border-radius: 20px;
+  background: var(--brand-primary-soft, #fef2f2);
+  border: 1px solid rgba(226, 55, 68, 0.3);
+  color: var(--brand-primary, #e23744);
+  padding: 8px 18px;
+  border-radius: var(--radius-full, 9999px);
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s;
-  box-shadow: 0 2px 10px rgba(225, 29, 98, 0.15);
+  transition: all 0.2s ease;
 }
 
 .clear-filter-btn:hover {
-  background: #e11d62;
+  background: var(--brand-primary, #e23744);
   color: #ffffff;
-  box-shadow: 0 4px 16px rgba(225, 29, 98, 0.35);
 }
 
 .explore-menu-list {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 24px;
   text-align: center;
   margin: 20px 0px 10px;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 8px 4px 16px;
+  padding: 6px 4px 14px;
 }
 
 .explore-menu-list::-webkit-scrollbar {
@@ -68,80 +66,78 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.2s ease;
   flex-shrink: 0;
-  perspective: 600px;
 }
 
 .explore-menu-list-item:hover {
-  transform: translateY(-8px) scale(1.06);
+  transform: translateY(-4px);
 }
 
 .all-category-circle {
-  width: 78px;
-  height: 78px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
   background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
-  border: 2px solid rgba(225, 29, 98, 0.18);
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 8px 22px rgba(225, 29, 98, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.9), inset 0 -3px 6px rgba(0, 0, 0, 0.08);
+  font-size: 28px;
+  border: 2px solid var(--border-medium, #e2e8f0);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .explore-menu-list-item.all-active .all-category-circle {
-  border-color: #e11d62;
-  background: #fff0f3;
-  box-shadow: 0 0 26px rgba(225, 29, 98, 0.45), 0 0 14px rgba(245, 158, 11, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.9);
-  transform: scale(1.08) rotate(3deg);
+  border-color: var(--brand-primary, #e23744);
+  background: var(--brand-primary-soft, #fef2f2);
+  box-shadow: 0 6px 16px rgba(226, 55, 68, 0.2);
+  transform: scale(1.05);
 }
 
 .explore-menu-list-item img {
-  width: 78px;
-  height: 78px;
+  width: 76px;
+  height: 76px;
   object-fit: cover;
   border-radius: 50%;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border: 2.5px solid rgba(225, 29, 98, 0.18);
-  box-shadow: 0 8px 22px rgba(225, 29, 98, 0.12), inset 0 2px 5px rgba(255, 255, 255, 0.7), inset 0 -3px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  border: 2px solid var(--border-medium, #e2e8f0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .explore-menu-list-item:hover img {
-  box-shadow: 0 14px 28px rgba(225, 29, 98, 0.25), 0 0 16px rgba(245, 158, 11, 0.25);
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
 .explore-menu-list-item .active {
-  border-color: #e11d62;
-  box-shadow: 0 0 28px rgba(225, 29, 98, 0.5), 0 0 16px rgba(245, 158, 11, 0.35);
-  transform: scale(1.1) rotate(-3deg);
+  border-color: var(--brand-primary, #e23744);
+  box-shadow: 0 6px 18px rgba(226, 55, 68, 0.25);
+  transform: scale(1.05);
 }
 
 .explore-menu-list-item p {
   margin-top: 10px;
   color: #475569;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
-  transition: all 0.2s;
+  transition: color 0.2s ease;
 }
 
 .explore-menu-list-item:hover p {
-  color: #e11d62;
-  transform: translateY(-2px);
+  color: var(--brand-primary, #e23744);
 }
 
 .explore-menu-list-item .active + p,
 .explore-menu-list-item.all-active p {
-  color: #e11d62;
-  font-weight: 800;
-  transform: translateY(-2px);
+  color: var(--brand-primary, #e23744);
+  font-weight: 700;
 }
 
 .explore-menu hr {
   margin: 15px 0px 30px;
-  height: 1.5px;
-  background: linear-gradient(90deg, transparent, rgba(225, 29, 98, 0.2), rgba(245, 158, 11, 0.2), transparent);
+  height: 1px;
+  background: var(--border-medium, #e2e8f0);
   border: none;
 }
 
@@ -158,7 +154,7 @@
   }
   .all-category-circle,
   .explore-menu-list-item img {
-    width: 65px;
-    height: 65px;
+    width: 64px;
+    height: 64px;
   }
 }

@@ -2,31 +2,32 @@ import React, { useContext, useState, useEffect } from 'react';
 import './FoodDisplay.css';
 import FoodItem from '../FoodItem/FoodItem';
 import { StoreContext } from '../../context/StoreContext';
+import { isVegetarianDish } from '../../assets/assets';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FoodDisplay = ({ category }) => {
   const { food_list, loadingFood, isFetchingMore, fetchMoreFood, favorites, isFavoriteFilter, setIsFavoriteFilter } = useContext(StoreContext);
   const [vegOnly, setVegOnly] = useState(false);
   const [sortBy, setSortBy] = useState('default');
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(12);
 
   const handleLoadMore = () => {
-    const nextCount = visibleCount + 8;
+    const nextCount = visibleCount + 12;
     setVisibleCount(nextCount);
-    const nextPage = Math.floor(visibleCount / 8) + 1;
+    const nextPage = Math.floor(visibleCount / 12) + 1;
     if (fetchMoreFood) {
-      fetchMoreFood(nextPage, 8);
+      fetchMoreFood(nextPage, 12);
     }
   };
 
   // Reset pagination to first batch whenever category, veg filter, favorites filter, or sort changes
   useEffect(() => {
-    setVisibleCount(8);
+    setVisibleCount(12);
   }, [category, vegOnly, isFavoriteFilter, sortBy]);
 
   let filteredList = food_list.filter((item) => {
     const matchesCategory = category === 'All' || item.category === category;
-    const isVeg = item.category === 'Pure Veg' || item.name.toLowerCase().includes('veg');
+    const isVeg = isVegetarianDish(item);
     const matchesDiet = !vegOnly || isVeg;
     const matchesFavorite = !isFavoriteFilter || (favorites && favorites.includes(String(item._id)));
     return matchesCategory && matchesDiet && matchesFavorite;
@@ -119,6 +120,7 @@ const FoodDisplay = ({ category }) => {
                   description={item.description}
                   price={item.price}
                   id={item._id}
+                  category={item.category}
                 />
               ))}
             </AnimatePresence>

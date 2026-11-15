@@ -12,34 +12,32 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FoodDetail from "./pages/FoodDetail/FoodDetail.jsx";
 import FloatingCart from "./components/FloatingCart/FloatingCart.jsx";
-import FloatingActions from "./components/FloatingActions/FloatingActions.jsx";
-import PageLoader from "./components/PageLoader/PageLoader.jsx";
-import GlitterParticles from "./components/GlitterParticles/GlitterParticles.jsx";
+import AIChatBot from "./components/AIChatBot/AIChatBot.jsx";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
-      <GlitterParticles />
-      <div className="diwali-fairy-lights-streamer" />
-      <PageLoader />
-      <ToastContainer />
-      {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : <></>}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+      {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : null}
+
+      {/* Full-width sticky header for edge-to-edge smoothness */}
+      <Navbar setShowLogin={setShowLogin} />
 
       <div className="app">
-        <Navbar setShowLogin={setShowLogin}/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<PlaceOrder />} />
-          <Route path="/verify" element={<Verify></Verify>} />
-          <Route path="/myorders" element={<MyOrders/>} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/myorders" element={<MyOrders />} />
           <Route path="/food/:id" element={<FoodDetail />} />
         </Routes>
       </div>
+
       <FloatingCart />
-      <FloatingActions />
+      <AIChatBot />
       <Footer />
     </>
   );

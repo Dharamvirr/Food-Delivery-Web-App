@@ -1,44 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './AppDownload.css';
 import { assets } from '../../assets/assets';
 import { motion } from 'framer-motion';
 
 const AppDownload = () => {
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    setRotateX(-y * 0.04);
-    setRotateY(x * 0.04);
-  };
-
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-  };
-
   return (
-    <div className='app-download-spatial-wrap' id='app-download'>
-      <div 
-        className="app-download-3d-card"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        {/* Ambient Gradient Glows */}
-        <div className="spatial-glow-blob blob-1"></div>
-        <div className="spatial-glow-blob blob-2"></div>
-
+    <div className='app-download-wrap' id='app-download'>
+      <div className="app-download-card">
         <div className="app-download-content-row">
           {/* Left Column: Copy & Store Links */}
           <div className="app-download-text-side">
-            <span className="app-download-badge">📱 3D Mobile Experience</span>
+            <span className="app-download-badge">📱 Official Mobile App</span>
             <h2>Pocket Gourmet. <br /><span className="text-highlight">Cravings on Demand.</span></h2>
             <p>
-              Download the official Tomato app for ultra-fast 1-click checkout, 
-              interactive real-time GPS delivery tracking, and exclusive secret chef perks.
+              Download the official Tomato app for fast 1-click checkout, 
+              interactive real-time GPS delivery tracking, and exclusive daily discounts.
             </p>
 
             <div className="app-features-checklist">
@@ -48,7 +24,7 @@ const AppDownload = () => {
               </div>
               <div className="check-item">
                 <span className="check-icon">✓</span>
-                <span>Live Socket.IO Stepper Tracking</span>
+                <span>Live Real-Time Stepper Tracking</span>
               </div>
               <div className="check-item">
                 <span className="check-icon">✓</span>
@@ -66,16 +42,9 @@ const AppDownload = () => {
             </div>
           </div>
 
-          {/* Right Column: 3D Isometric Phone & Spatial Badges */}
+          {/* Right Column: Clean Phone Mockup & Delivery Status */}
           <div className="app-download-phone-stage">
-            <motion.div 
-              className="mockup-3d-phone"
-              style={{
-                transformStyle: 'preserve-3d',
-                transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-              }}
-            >
-              {/* Phone Bezel */}
+            <div className="mockup-phone">
               <div className="phone-screen-glass">
                 <div className="phone-notch"></div>
                 <div className="phone-app-header">
@@ -111,10 +80,10 @@ const AppDownload = () => {
                 </div>
               </div>
 
-              {/* Floating Spatial Badge 1 */}
+              {/* Floating Badge 1 */}
               <motion.div 
-                className="phone-spatial-badge badge-top-right"
-                animate={{ y: [0, -6, 0] }}
+                className="phone-float-badge badge-top-right"
+                animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
               >
                 <span className="badge-ico">⭐</span>
@@ -124,19 +93,19 @@ const AppDownload = () => {
                 </div>
               </motion.div>
 
-              {/* Floating Spatial Badge 2 */}
+              {/* Floating Badge 2 */}
               <motion.div 
-                className="phone-spatial-badge badge-bottom-left"
-                animate={{ y: [0, 6, 0] }}
+                className="phone-float-badge badge-bottom-left"
+                animate={{ y: [0, 5, 0] }}
                 transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
               >
                 <span className="badge-ico">🏷️</span>
                 <div>
-                  <p className="b-title">FLAT ₹120 OFF</p>
-                  <p className="b-sub">Instant Coupon</p>
+                  <p className="b-title">FLAT ₹50 OFF</p>
+                  <p className="b-sub">Code: TOMATO50</p>
                 </div>
               </motion.div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

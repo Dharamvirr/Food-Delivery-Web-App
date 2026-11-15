@@ -1,52 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './FoodItem.css';
-import { assets, getFoodImageUrl } from '../../assets/assets';
+import { assets, getFoodImageUrl, isVegetarianDish } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 
-const FoodItem = ({ id, name, price, description, image }) => {
+const FoodItem = ({ id, name, price, description, image, category }) => {
   const { cartItems, addToCart, removeFromCart, url, favorites, toggleFavorite } = useContext(StoreContext);
   const navigate = useNavigate();
 
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
-
   const isFavorite = favorites && favorites.includes(String(id));
-
   const imageSrc = getFoodImageUrl(image, url, name);
 
-  const isVeg =
-    name.toLowerCase().includes('veg') ||
-    (description && description.toLowerCase().includes('veg')) ||
-    name.toLowerCase().includes('salad') ||
-    name.toLowerCase().includes('cake') ||
-    name.toLowerCase().includes('ice cream');
+  const isVeg = isVegetarianDish({ name, description, category });
 
   const handleCardClick = () => {
     navigate(`/food/${id}`);
-  };
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const xOffset = x - rect.width / 2;
-    const yOffset = y - rect.height / 2;
-    setRotateX(-yOffset * 0.055);
-    setRotateY(xOffset * 0.055);
-    setGlare({
-      x: (x / rect.width) * 100,
-      y: (y / rect.height) * 100,
-      opacity: 0.35
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-    setGlare({ x: 50, y: 50, opacity: 0 });
   };
 
   const handleLike = (e) => {
@@ -59,12 +27,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
     <div 
       className='food-item' 
       onClick={handleCardClick} 
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       title="Click to view details"
-      style={{
-        transform: `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-      }}
     >
       <div className='food-item-img-container'>
         <img 
@@ -97,7 +60,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
           {isFavorite ? "❤️" : "🤍"}
         </button>
 
-        {/* High-Contrast Non-Disappearing Add to Cart & Counter */}
+        {/* Add to Cart & Counter */}
         {!cartItems[id] ? (
           <button
             className='food-add-btn'

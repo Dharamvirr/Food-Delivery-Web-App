@@ -1,3 +1,8 @@
+import dns from "node:dns";
+try {
+  dns.setDefaultResultOrder("ipv4first");
+} catch (e) {}
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -9,7 +14,13 @@ import userRouter from "./routes/userRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import reviewRouter from "./routes/reviewRoute.js";
+import aiRouter from "./routes/aiRoute.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.join(__dirname, ".env") });
 dotenv.config();
 
 const app = express();
@@ -61,6 +72,7 @@ app.use("/images", express.static("uploads"));
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/review", reviewRouter);
+app.use("/api/ai", aiRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working (WebSockets & Real-time Active)");

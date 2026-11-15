@@ -249,8 +249,8 @@ const StoreContextProvider = (props) => {
 
     useEffect(() => {
         async function loadData() {
-            // Asynchronously sync first batch with backend without blocking initial UI
-            fetchFoodList(1, 8);
+            // Asynchronously sync all dishes with backend without blocking initial UI
+            fetchFoodList(1, 50);
             const savedToken = localStorage.getItem("token");
             if (savedToken) {
                 setToken(savedToken);

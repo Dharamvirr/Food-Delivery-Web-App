@@ -1,18 +1,21 @@
-.verify{
-    min-height: 60vh;
-    display: grid;
+.verify {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.verify .spinner{
-    width: 100px;
-    height: 100px;
-    place-self: center;
-    border: 5px solid #bdbdbd;
-    border-top-color: tomato;
-    border-radius: 50%;
-    animation: rotate 1s infinite;
+
+.verify .spinner {
+  width: 56px;
+  height: 56px;
+  border: 4px solid #f1f5f9;
+  border-top: 4px solid var(--brand-primary, #e23744);
+  border-radius: 50%;
+  animation: rotate 0.8s linear infinite;
 }
+
 @keyframes rotate {
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }
