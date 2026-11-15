@@ -25,9 +25,9 @@ if (!isGeminiConfigured) {
 // Fallback key prevents constructor error at import/boot time if key is not yet set in deployment
 const effectiveKey = apiKey || "STANDBY_KEY_NOT_CONFIGURED";
 
-// Gemini Chat Model (using gemini-2.5-flash for speed, quota & tool-calling)
+// Gemini Chat Model (using gemini-3.5-flash-lite for speed, quota & tool-calling)
 export const geminiChatModel = new ChatGoogleGenerativeAI({
-  model: "gemini-2.5-flash",
+  model: "gemini-3.5-flash-lite",
   apiKey: effectiveKey,
   temperature: 0.7,
 });
